@@ -7,7 +7,7 @@ export const ThemedButton = (
     props: {
         title: string;
         onPress: () => void;
-        customStyle?: StyleProp<ViewStyle>;
+        style?: StyleProp<ViewStyle>;
     }
 ) => {
     const theme = useTheme();
@@ -19,7 +19,7 @@ export const ThemedButton = (
                 theme.dark
                     ? {backgroundColor: Colors.light.backgroundColor}
                     : {backgroundColor: Colors.dark.backgroundColor},
-                props.customStyle,
+                props.style,
             ]}
             onPressOut={props.onPress}>
             <ThemedText style={styles.buttonText} inverseColor={true}>{props.title}</ThemedText>
@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
     button: {
         padding: 10,
         borderRadius: 10,
+        width: 300
     },
     buttonText: {
         fontWeight: "bold",
-        fontSize: 20,
+        fontSize: 18,
         textAlign: "center",
     },
 })

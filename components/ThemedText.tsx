@@ -7,13 +7,15 @@ interface ThemedTextProps {
     style?: StyleProp<TextStyle>;
     children: React.ReactNode;
     inverseColor?: boolean,
+    onPress?: () => void;
 }
 
-export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverseColor }) => {
+export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverseColor, onPress }) => {
     const theme = useTheme();
 
     return (
         <Text
+            onPress={onPress}
             style={[
                 style,
                 {
