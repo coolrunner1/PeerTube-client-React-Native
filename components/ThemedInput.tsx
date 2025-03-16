@@ -1,19 +1,20 @@
-import {StyleSheet, TextInput, useColorScheme} from "react-native";
+import {StyleSheet, TextInput} from "react-native";
+import {useTheme} from "@react-navigation/core";
 
-export const StandardInput = (
+export const ThemedInput = (
     props: {
         placeholder: string;
         onChangeText: (value: string) => void;
     }
 ) => {
-    const theme = useColorScheme();
+    const theme = useTheme();
 
     return (
         <TextInput
             placeholder={props.placeholder}
-            placeholderTextColor={theme === "dark" ? "#f5511e" : "#f5511e"}
+            placeholderTextColor={theme.dark ? "#f5511e" : "#f5511e"}
             onChangeText={props.onChangeText}
-            style={[styles.input, theme === "dark" ? styles.dark : styles.light]}
+            style={[styles.input, theme.dark ? styles.dark : styles.light]}
         />
     );
 };
