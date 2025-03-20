@@ -1,8 +1,8 @@
 import {Button, StyleSheet, View} from "react-native";
 import {Colors} from "@/constants/Colors";
-import {ThemedText} from "@/components/ThemedText";
-import {ThemedInput} from "@/components/ThemedInput";
-import {ThemedButton} from "@/components/ThemedButton";
+import {ThemedText} from "@/components/Global/ThemedText";
+import {ThemedInput} from "@/components/Global/ThemedInput";
+import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {useState} from "react";
 

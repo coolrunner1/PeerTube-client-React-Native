@@ -1,7 +1,7 @@
 import {Button, StyleSheet, View} from "react-native";
-import {ThemedInput} from "@/components/ThemedInput";
-import {ThemedText} from "@/components/ThemedText";
-import {ThemedButton} from "@/components/ThemedButton";
+import {ThemedInput} from "@/components/Global/ThemedInput";
+import {ThemedText} from "@/components/Global/ThemedText";
+import {ThemedButton} from "@/components/Global/ThemedButton";
 import {Colors} from "@/constants/Colors";
 import {useNavigation, useTheme} from "@react-navigation/core";
 import {useState} from "react";
@@ -39,7 +39,7 @@ export default function Login({navigation}: {navigation: any}) {
             />
             <ThemedButton
                 title={"Sign in"}
-                onPress={() => navigation.navigate("home")}
+                onPress={() => navigation.navigate("(main)")}
                 style={{backgroundColor: "#f9526c", marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />

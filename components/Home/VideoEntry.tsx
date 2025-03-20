@@ -1,5 +1,5 @@
 import {StyleSheet, View, Image, Pressable} from "react-native";
-import {ThemedText} from "@/components/ThemedText";
+import {ThemedText} from "@/components/Global/ThemedText";
 
 
 export const VideoEntry = (
@@ -26,7 +26,7 @@ export const VideoEntry = (
                 }}
             />
             <View style={{flexShrink: 1}}>
-                <ThemedText style={{fontWeight: "bold", marginBottom: 2}}>{props.title}</ThemedText>
+                <ThemedText style={{fontWeight: "bold", marginBottom: 2}}>{props.title.substring(0, 70)+(props.title.length > 70 ? "..." : "")}</ThemedText>
                 <ThemedText>{props.channelDisplayName}</ThemedText>
                 <ThemedText>{new Date(props.publishedAt).toDateString().slice(4)} &#x2022; {props.views} views</ThemedText>
             </View>

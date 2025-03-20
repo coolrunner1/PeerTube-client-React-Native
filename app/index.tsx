@@ -1,8 +1,8 @@
 import {StyleSheet, View, ImageBackground} from "react-native";
 import {Colors} from "@/constants/Colors";
-import {ThemedText} from "@/components/ThemedText";
+import {ThemedText} from "@/components/Global/ThemedText";
 import {useTheme} from "@react-navigation/core";
-import {ThemedButton} from "@/components/ThemedButton";
+import {ThemedButton} from "@/components/Global/ThemedButton";
 
 export default function Index({navigation}: {navigation: any}) {
     const theme = useTheme();

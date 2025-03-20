@@ -17,7 +17,6 @@ export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverse
         <Text
             onPress={onPress}
             style={[
-                style,
                 {
                     color: inverseColor
                         ? theme.dark
@@ -27,6 +26,7 @@ export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverse
                             ? Colors.dark.color
                             : Colors.light.color,
                 },
+                style,
             ]}
         >
             {children}
