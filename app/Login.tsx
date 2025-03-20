@@ -4,12 +4,32 @@ import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {Colors} from "@/constants/Colors";
 import {useNavigation, useTheme} from "@react-navigation/core";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({navigation}: {navigation: any}) {
     const theme = useTheme();
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loginInfo, setLoginInfo] = useState<string>("");
+    const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false);
+
+    const signIn = () => {
+        if (loginInfo) {
+            let loginJSON = JSON.parse(loginInfo);
+            if ((loginJSON.username === username || loginJSON.email === username) && loginJSON.password === password) {
+                loginJSON.loggedIn = true;
+                AsyncStorage.setItem("login", JSON.stringify(loginJSON));
+                navigation.navigate("(main)");
+                return;
+            }
+        }
+        setInvalidCredentials(true);
+    }
+
+    useEffect(() => {
+        AsyncStorage.getItem("login").then((data) => data && setLoginInfo(data));
+    }, [])
 
     return (
         <View style={
@@ -37,9 +57,10 @@ export default function Login({navigation}: {navigation: any}) {
                 value={password}
                 secureTextEntry={true}
             />
+            {invalidCredentials && <ThemedText style={{color: "red"}}>Invalid credentials!</ThemedText>}
             <ThemedButton
                 title={"Sign in"}
-                onPress={() => navigation.navigate("(main)")}
+                onPress={signIn}
                 style={{backgroundColor: "#f9526c", marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />

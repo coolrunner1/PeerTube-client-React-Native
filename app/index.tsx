@@ -3,9 +3,17 @@ import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/Global/ThemedButton";
+import {useEffect} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {navigate} from "expo-router/build/global-state/routing";
 
 export default function Index({navigation}: {navigation: any}) {
     const theme = useTheme();
+
+    useEffect(() => {
+        AsyncStorage.getItem("login")
+            .then((data) => data && JSON.parse(data).loggedIn && navigation.navigate("(main)"))
+    }, [])
 
     return (
         <ImageBackground

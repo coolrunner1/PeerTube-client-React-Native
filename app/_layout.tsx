@@ -7,10 +7,12 @@ import Login from "@/app/Login";
 import Registration from "@/app/Registration";
 import HomeScreen from "@/app/(main)/HomeScreen";
 import HomeLayout from "@/app/(main)/_layout";
+import {useState} from "react";
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
     const Stack = createNativeStackNavigator();
+    const [authenticated, setAuthenticated] = useState(false);
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

@@ -5,6 +5,7 @@ import {ThemedInput} from "@/components/Global/ThemedInput";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Registration({navigation}: {navigation: any}) {
     const theme = useTheme();
@@ -12,6 +13,33 @@ export default function Registration({navigation}: {navigation: any}) {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [invalidForm, setInvalidForm] = useState<boolean>(false);
+
+    const validateEmail = (email: string) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
+    const validateRegistration = () => {
+        if (!username || !validateEmail(email) || !password || password !== confirmPassword) {
+            setInvalidForm(true);
+            if (!validateEmail(email)) {
+                setEmail("");
+            }
+            if (!password || password !== confirmPassword) {
+                setPassword("");
+                setConfirmPassword("");
+            }
+        } else {
+            setInvalidForm(false);
+            AsyncStorage.setItem("login",
+                JSON.stringify({username: username, email: email, password: password, loggedIn: true}))
+                    .then(() => navigation.navigate("(main)"));
+        }
+    };
 
     return (
         <View style={
@@ -27,26 +55,26 @@ export default function Registration({navigation}: {navigation: any}) {
                 onPress={() => navigation.navigate("login")}
             >Sign In now</ThemedText></ThemedText>
             <ThemedInput
-                placeholder={"Username"}
+                placeholder={invalidForm && !username ? "Username is empty!" : "Username"}
                 placeholderTextColor={"#f9526c"}
                 value={username}
                 onChangeText={setUsername}
             />
             <ThemedInput
-                placeholder={"Email"}
+                placeholder={invalidForm && !validateEmail(email) ? "Invalid email!" : "Email"}
                 placeholderTextColor={"#f9526c"}
                 value={email}
                 onChangeText={setEmail}
             />
             <ThemedInput
-                placeholder={"Password"}
+                placeholder={invalidForm && !password ? "Password is empty!" : "Password"}
                 placeholderTextColor={"#f9526c"}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={true}
             />
             <ThemedInput
-                placeholder={"Confirm password"}
+                placeholder={invalidForm && password !== confirmPassword ? "Passwords don't match!" : "Confirm password"}
                 placeholderTextColor={"#f9526c"}
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
@@ -54,7 +82,7 @@ export default function Registration({navigation}: {navigation: any}) {
             />
             <ThemedButton
                 title={"Sign up"}
-                onPress={() => {}}
+                onPress={validateRegistration}
                 style={{backgroundColor: "#f9526c", marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
@@ -73,5 +101,8 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         justifyContent: "center"
+    },
+    errorMessage: {
+        color: "red"
     }
 })
