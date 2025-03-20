@@ -18,8 +18,12 @@ export const Options = () => {
 
     return (
         <>
-            <ThemedText style={{marginTop: 50}}>Not implemented</ThemedText>
+            <ThemedText style={{marginTop: 50}}>Not implemented!</ThemedText>
+            <ThemedText>Account</ThemedText>
             <Button title="Log out" onPress={logOut} />
+            <ThemedText>Theme (dark. light)</ThemedText>
+            <ThemedText>Player (builtin, webview)</ThemedText>
+            <ThemedText>Instances</ThemedText>
         </>
     );
 };
