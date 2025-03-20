@@ -6,6 +6,8 @@ export const ThemedInput = (
         placeholder: string;
         onChangeText: (value: string) => void;
         placeholderTextColor?: string;
+        secureTextEntry?: boolean;
+        value: string;
     }
 ) => {
     const theme = useColorScheme();
@@ -17,6 +19,8 @@ export const ThemedInput = (
                 ? props.placeholderTextColor
                 : theme === "dark" ? Colors.dark.color : Colors.light.color}
             onChangeText={props.onChangeText}
+            value={props.value}
+            secureTextEntry={props.secureTextEntry}
             style={[styles.input, theme === "dark" ? styles.dark : styles.light]}
         />
     );
@@ -32,11 +36,9 @@ const styles = StyleSheet.create({
     },
     dark: {
         backgroundColor: "#373637",
-
         color: "white",
     },
     light: {
         backgroundColor: "#fbf0edaf",
-        borderColor: "#f5511e",
     }
 })

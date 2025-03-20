@@ -4,9 +4,12 @@ import {ThemedText} from "@/components/ThemedText";
 import {ThemedButton} from "@/components/ThemedButton";
 import {Colors} from "@/constants/Colors";
 import {useNavigation, useTheme} from "@react-navigation/core";
+import {useState} from "react";
 
 export default function Login({navigation}: {navigation: any}) {
     const theme = useTheme();
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     return (
         <View style={
@@ -22,21 +25,24 @@ export default function Login({navigation}: {navigation: any}) {
                 onPress={() => navigation.navigate("registration")}
             >Sign Up now</ThemedText></ThemedText>
             <ThemedInput
-                placeholder={"Login"}
+                placeholder={"Username/Email"}
                 placeholderTextColor={"#f9526c"}
-                onChangeText={(value: string) => {}}
+                onChangeText={setUsername}
+                value={username}
             />
             <ThemedInput
                 placeholder={"Password"}
                 placeholderTextColor={"#f9526c"}
-                onChangeText={(value: string) => {}}
+                onChangeText={setPassword}
+                value={password}
+                secureTextEntry={true}
             />
             <ThemedButton
-                title={"Login"}
-                onPress={() => {}}
+                title={"Sign in"}
+                onPress={() => navigation.navigate("home")}
                 style={{backgroundColor: "#f9526c", marginTop: 40}}
             />
-            <ThemedButton title={"Back"} onPress={() => navigation.goBack()} />
+            <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
         </View>
     );
 };

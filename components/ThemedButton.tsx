@@ -21,7 +21,7 @@ export const ThemedButton = (
                     : {backgroundColor: Colors.dark.backgroundColor},
                 props.style,
             ]}
-            onPressOut={props.onPress}>
+            onPress={props.onPress}>
             <ThemedText style={styles.buttonText} inverseColor={true}>{props.title}</ThemedText>
         </Pressable>
     );

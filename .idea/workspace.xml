@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ffa6fdf-6e33-497e-96aa-52785467c8eb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/images/S3nXUyVw.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/main-page-bg-dark.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/main-page-bg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ThemeToggle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ThemedText.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/constants/Colors.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(main)/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/HomeScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/VideoEntry.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/VideoPlayer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/Video.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Registration.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Registration.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ThemedButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ThemedButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ThemedInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ThemedInput.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +47,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "LR1",
-    "last_opened_file_path": "/home/igor/projects/React-Native-6-semester/assets/images",
+    "last_opened_file_path": "/home/igor/projects/React-Native-6-semester/app/(main)",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -62,22 +63,25 @@
       <map>
         <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
         <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
       </map>
     </option>
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/(main)" />
       <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/" />
       <recent name="$PROJECT_DIR$/assets/images" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.25659.40" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.26053.12" />
       </set>
     </attachedChunks>
   </component>
@@ -91,6 +95,8 @@
       <updated>1740209212134</updated>
       <workItem from="1740209213256" duration="3153000" />
       <workItem from="1742065181974" duration="13975000" />
+      <workItem from="1742125131797" duration="15856000" />
+      <workItem from="1742451706605" duration="11178000" />
     </task>
     <servers />
   </component>

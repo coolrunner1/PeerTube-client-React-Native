@@ -1,22 +1,11 @@
-import {useEffect, useState} from "react";
-import {Text, StyleSheet, View, ImageBackground} from "react-native";
+import {StyleSheet, View, ImageBackground} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/ThemedText";
 import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/ThemedButton";
 
 export default function Index({navigation}: {navigation: any}) {
-    const [visible, setVisible] = useState<boolean>(false);
-
     const theme = useTheme();
-
-    const clickTest = () => {
-        setVisible(!visible);
-    }
-
-    useEffect(() => {
-        console.log(theme);
-    }, [theme]);
 
     return (
         <ImageBackground
@@ -43,7 +32,6 @@ export default function Index({navigation}: {navigation: any}) {
                         onPress={() => navigation.navigate('registration', {})}
                     />
                 </View>
-                {visible && <Text style={styles.testText}>Test</Text>}
             </View>
 
         </ImageBackground>
