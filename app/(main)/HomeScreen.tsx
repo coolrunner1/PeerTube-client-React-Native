@@ -8,6 +8,7 @@ import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Video} from "@/types/Video";
 import {Header} from "@/components/Home/Header";
+import {ContentFilters} from "@/components/Home/ContentFilters";
 
 export default function HomeScreen () {
     const theme = useTheme();
@@ -61,6 +62,7 @@ export default function HomeScreen () {
             {(!loading && !watch) &&
                 <>
                     <Header />
+                    <ContentFilters/>
                     <ScrollView
                         style={[{flex: 1}, theme.dark
                             ? {backgroundColor: Colors.dark.backgroundColor}

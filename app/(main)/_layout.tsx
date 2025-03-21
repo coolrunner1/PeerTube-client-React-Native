@@ -1,8 +1,8 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import HomeScreen from "@/app/(main)/HomeScreen";
 import {NavigationContainer} from "@react-navigation/native";
-import {Options} from "@/app/(main)/Options";
-import {Subscriptions} from "@/app/(main)/Subscriptions";
+import Options from "@/app/(main)/Options";
+import Subscriptions from "@/app/(main)/Subscriptions";
 
 
 export default function HomeLayout() {

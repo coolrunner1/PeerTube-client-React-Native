@@ -1,4 +1,4 @@
-import {Pressable, StyleProp, StyleSheet, Text, ViewStyle} from "react-native";
+import {Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
@@ -8,6 +8,7 @@ export const ThemedButton = (
         title: string;
         onPress: () => void;
         style?: StyleProp<ViewStyle>;
+        textStyle?: StyleProp<TextStyle>;
     }
 ) => {
     const theme = useTheme();
@@ -22,7 +23,7 @@ export const ThemedButton = (
                 props.style,
             ]}
             onPress={props.onPress}>
-            <ThemedText style={styles.buttonText} inverseColor={true}>{props.title}</ThemedText>
+            <ThemedText style={[styles.buttonText, props.textStyle]} inverseColor={true}>{props.title}</ThemedText>
         </Pressable>
     );
 };
