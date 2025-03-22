@@ -1,5 +1,6 @@
 import {StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
+import {Colors} from "@/constants/Colors";
 
 export const Header = () => {
     return (
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingTop: 15,
-        backgroundColor: "#f9526c",
+        backgroundColor: Colors.emphasised.backgroundColor,
         maxHeight: 80,
     }
 });

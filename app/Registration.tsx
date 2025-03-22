@@ -56,26 +56,26 @@ export default function Registration({navigation}: {navigation: any}) {
             >Sign In now</ThemedText></ThemedText>
             <ThemedInput
                 placeholder={invalidForm && !username ? "Username is empty!" : "Username"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 value={username}
                 onChangeText={setUsername}
             />
             <ThemedInput
                 placeholder={invalidForm && !validateEmail(email) ? "Invalid email!" : "Email"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 value={email}
                 onChangeText={setEmail}
             />
             <ThemedInput
                 placeholder={invalidForm && !password ? "Password is empty!" : "Password"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={true}
             />
             <ThemedInput
                 placeholder={invalidForm && password !== confirmPassword ? "Passwords don't match!" : "Confirm password"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 secureTextEntry={true}
@@ -83,7 +83,7 @@ export default function Registration({navigation}: {navigation: any}) {
             <ThemedButton
                 title={"Sign up"}
                 onPress={validateRegistration}
-                style={{backgroundColor: "#f9526c", marginTop: 40}}
+                style={{backgroundColor: Colors.emphasised.backgroundColor, marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
         </View>

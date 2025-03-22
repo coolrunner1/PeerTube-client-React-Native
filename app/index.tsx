@@ -33,7 +33,7 @@ export default function Index({navigation}: {navigation: any}) {
                     <ThemedButton
                         title={"Login"}
                         onPress={() => navigation.navigate('login', {})}
-                        style={{backgroundColor: "#f9526c"}}
+                        style={{backgroundColor: Colors.emphasised.backgroundColor}}
                     />
                     <ThemedButton
                         title={"Register"}

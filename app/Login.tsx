@@ -46,13 +46,13 @@ export default function Login({navigation}: {navigation: any}) {
             >Sign Up now</ThemedText></ThemedText>
             <ThemedInput
                 placeholder={"Username/Email"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 onChangeText={setUsername}
                 value={username}
             />
             <ThemedInput
                 placeholder={"Password"}
-                placeholderTextColor={"#f9526c"}
+                placeholderTextColor={Colors.emphasised.backgroundColor}
                 onChangeText={setPassword}
                 value={password}
                 secureTextEntry={true}
@@ -61,7 +61,7 @@ export default function Login({navigation}: {navigation: any}) {
             <ThemedButton
                 title={"Sign in"}
                 onPress={signIn}
-                style={{backgroundColor: "#f9526c", marginTop: 40}}
+                style={{backgroundColor: Colors.emphasised.backgroundColor, marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
         </View>

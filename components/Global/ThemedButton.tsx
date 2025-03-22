@@ -1,4 +1,4 @@
-import {Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
+import {Pressable, StyleProp, StyleSheet, TextStyle, ViewStyle} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";

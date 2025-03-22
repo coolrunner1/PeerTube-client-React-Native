@@ -3,11 +3,15 @@ import {ActivityIndicator, ScrollView, StyleSheet} from "react-native";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
+import {useDispatch} from "react-redux";
+import {setSelectedFilter} from "@/slices/filtersSlice";
+import {ContentFilterButton} from "@/components/Home/ContentFilterButton";
 
 export const ContentFilters = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [loaded, setLoaded] = useState(false);
     const theme = useTheme();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetch("https://tinkerbetter.tube/api/v1/videos/categories")
@@ -20,15 +24,14 @@ export const ContentFilters = () => {
         <ScrollView horizontal={true} style={[styles.container, theme.dark
             ? {backgroundColor: Colors.dark.backgroundColor}
             : {backgroundColor: Colors.light.backgroundColor}]}>
-            {!loaded && <ActivityIndicator size="large" color={"#f9526c"}/>}
+            {!loaded && <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>}
             {loaded &&
                 categories.map((category, key) =>
-                    <ThemedButton
+                    <ContentFilterButton
                         key={key}
+                        id={key}
                         title={category}
-                        onPress={() => {}}
-                        style={styles.entry}
-                        textStyle={styles.entryText}
+                        onPress={() => {dispatch(setSelectedFilter(key))}}
                     />)}
         </ScrollView>
     );
@@ -40,13 +43,4 @@ const styles = StyleSheet.create({
         maxHeight: 50,
         padding: 5,
     },
-    entry: {
-        padding: 10,
-        marginHorizontal: 5,
-        minWidth: 70,
-        width: "auto",
-    },
-    entryText: {
-        fontSize: 15,
-    }
 })

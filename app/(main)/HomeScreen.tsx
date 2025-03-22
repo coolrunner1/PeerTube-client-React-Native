@@ -9,6 +9,8 @@ import {ThemedText} from "@/components/Global/ThemedText";
 import {Video} from "@/types/Video";
 import {Header} from "@/components/Home/Header";
 import {ContentFilters} from "@/components/Home/ContentFilters";
+import {useSelector} from "react-redux";
+import {RootState} from "@/state/store";
 
 export default function HomeScreen () {
     const theme = useTheme();
@@ -17,17 +19,25 @@ export default function HomeScreen () {
     const [watch, setWatch] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
+    const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
 
-    const loadVideos = async () => {
-        await fetch(`https://tinkerbetter.tube/api/v1/videos?start=${videos.length}`)
+    const loadVideos = async (clearVideos: boolean) => {
+        await fetch(`https://tinkerbetter.tube/api/v1/videos?start=${videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
             .then((res) => res.json())
-            .then((json) => {setVideos([...videos, ...json.data]); setLoading(false)})
+            .then((json) => {
+                setVideos(clearVideos ? json.data : [...videos, ...json.data]);
+                setLoading(false);
+            })
             .catch((err) => {console.error(err); setError(err.toString())});
         setEndOfScreen(false);
     }
 
     useEffect(() => {
-        loadVideos();
+        loadVideos(true);
+    }, [selectedFilter]);
+
+    useEffect(() => {
+        loadVideos(false);
     }, [endOfScreen])
 
     return (
@@ -38,7 +48,7 @@ export default function HomeScreen () {
                     : {backgroundColor: Colors.light.backgroundColor}]
                 }>
                     {!error
-                        ? <ActivityIndicator size="large" color={"#f9526c"}/>
+                        ? <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>
                         : <>
                             <ThemedText
                                 style={{fontSize: 18, fontWeight: "bold", marginBottom: 5}}
@@ -88,7 +98,7 @@ export default function HomeScreen () {
                                     onPress={() => setWatch(`https://tinkerbetter.tube${video.embedPath}`)}
                                 />
                             ))}
-                            {endOfScreen && <ActivityIndicator color={"#f9526c"}/>}
+                            {endOfScreen && <ActivityIndicator color={Colors.emphasised.backgroundColor}/>}
                         </View>
                     </ScrollView>
                 </>
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: "auto",
-        marginTop: 15,
+        marginTop: 10,
         paddingHorizontal: 5,
         gap: 15,
         maxWidth: 900,

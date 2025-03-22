@@ -8,6 +8,8 @@ import Registration from "@/app/Registration";
 import HomeScreen from "@/app/(main)/HomeScreen";
 import HomeLayout from "@/app/(main)/_layout";
 import {useState} from "react";
+import {store} from "@/state/store";
+import {Provider} from "react-redux";
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
@@ -15,14 +17,16 @@ export default function RootLayout() {
     const [authenticated, setAuthenticated] = useState(false);
 
     return (
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack.Navigator>
-                <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
-                <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="registration" component={Registration} options={{ headerShown: false }} />
-                <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false }} />
-            </Stack.Navigator>
-            <StatusBar style="auto" />
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <Stack.Navigator>
+                    <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
+                    <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="registration" component={Registration} options={{ headerShown: false }} />
+                    <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false }} />
+                </Stack.Navigator>
+                <StatusBar style="auto" />
+            </ThemeProvider>
+        </Provider>
     );
 }
