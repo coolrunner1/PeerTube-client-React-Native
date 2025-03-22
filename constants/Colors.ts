@@ -8,6 +8,7 @@ export const Colors = {
         backgroundColor: "#151718",
     },
     emphasised: {
+        color: "#f9526c",
         backgroundColor: "#f9526c",
     }
 };

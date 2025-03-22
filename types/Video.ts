@@ -11,4 +11,6 @@ export type Video = {
     dislikes: number;
     embedPath: string;
     channel: Channel;
+    isLive: boolean;
+    nsfw: boolean;
 }

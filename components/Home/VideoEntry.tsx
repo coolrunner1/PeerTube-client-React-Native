@@ -1,5 +1,6 @@
 import {StyleSheet, View, Image, Pressable} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
+import {Colors} from "@/constants/Colors";
 
 
 export const VideoEntry = (
@@ -9,6 +10,8 @@ export const VideoEntry = (
         publishedAt: string,
         views: number,
         channelDisplayName: string,
+        isLive?: boolean,
+        nsfw?: boolean,
         onPress?: () => void,
     }
 ) => {
@@ -21,13 +24,16 @@ export const VideoEntry = (
 
             <Image
                 style={styles.image}
-                source={{
+                source={ !props.nsfw ? {
                     uri: props.thumbnail,
-                }}
+                } : require('@/assets/images/nsfw.png')
+                }
             />
             <View style={{flexShrink: 1}}>
                 <ThemedText style={{fontWeight: "bold", marginBottom: 2}}>{props.title.substring(0, 70)+(props.title.length > 70 ? "..." : "")}</ThemedText>
-                <ThemedText>{props.channelDisplayName}</ThemedText>
+                <ThemedText>
+                    {props.isLive &&
+                        <ThemedText style={{color: Colors.emphasised.color}}>Live </ThemedText>}{props.channelDisplayName}</ThemedText>
                 <ThemedText>{new Date(props.publishedAt).toDateString().slice(4)} &#x2022; {props.views} views</ThemedText>
             </View>
         </Pressable>

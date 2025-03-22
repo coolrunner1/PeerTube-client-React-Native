@@ -22,7 +22,7 @@ export default function HomeScreen () {
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://tinkerbetter.tube/api/v1/videos?start=${videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
+        await fetch(`https://tinkerbetter.tube/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -33,6 +33,7 @@ export default function HomeScreen () {
     }
 
     useEffect(() => {
+        setLoading(true);
         loadVideos(true);
     }, [selectedFilter]);
 
@@ -42,21 +43,18 @@ export default function HomeScreen () {
 
     return (
         <>
-            {loading &&
+            {loading && error &&
                 <View style={[{flex: 1, justifyContent: "center", alignItems: "center"}, theme.dark
                     ? {backgroundColor: Colors.dark.backgroundColor}
                     : {backgroundColor: Colors.light.backgroundColor}]
                 }>
-                    {!error
-                        ? <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>
-                        : <>
-                            <ThemedText
-                                style={{fontSize: 18, fontWeight: "bold", marginBottom: 5}}
-                            >Selected PeerTube instance might be down</ThemedText>
-                            <ThemedText style={{fontWeight: "bold"}}>Error message:</ThemedText>
-                            <ThemedText style={{color: "red"}}>{error}</ThemedText>
-                        </>
-                    }
+                    <>
+                        <ThemedText
+                            style={{fontSize: 18, fontWeight: "bold", marginBottom: 5}}
+                        >Selected PeerTube instance might be down</ThemedText>
+                        <ThemedText style={{fontWeight: "bold"}}>Error message:</ThemedText>
+                        <ThemedText style={{color: "red"}}>{error}</ThemedText>
+                    </>
                 </View>
             }
             {watch &&
@@ -69,7 +67,7 @@ export default function HomeScreen () {
                     <VideoPlayer embedPath={watch} />
                 </ScrollView>
             }
-            {(!loading && !watch) &&
+            {!watch && !error &&
                 <>
                     <Header />
                     <ContentFilters/>
@@ -87,7 +85,7 @@ export default function HomeScreen () {
                         }}
                     >
                         <View style={styles.container}>
-                            {videos.map((video) => (
+                            {!loading && videos.map((video) => (
                                 <VideoEntry
                                     key={video.uuid}
                                     title={video.name}
@@ -96,6 +94,8 @@ export default function HomeScreen () {
                                     views={video.views}
                                     channelDisplayName={video.channel.displayName}
                                     onPress={() => setWatch(`https://tinkerbetter.tube${video.embedPath}`)}
+                                    isLive={video.isLive}
+                                    nsfw={video.nsfw}
                                 />
                             ))}
                             {endOfScreen && <ActivityIndicator color={Colors.emphasised.backgroundColor}/>}
