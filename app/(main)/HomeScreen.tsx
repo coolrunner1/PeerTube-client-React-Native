@@ -1,4 +1,4 @@
-import {StyleSheet, ActivityIndicator, Animated, Button, View} from "react-native";
+import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl} from "react-native";
 import ScrollView = Animated.ScrollView;
 import {useEffect, useState} from "react";
 import {VideoEntry} from "@/components/Home/VideoEntry";
@@ -33,7 +33,17 @@ export default function HomeScreen () {
             })
             .catch((err) => {console.error(err); setError(err.toString())});
         setEndOfScreen(false);
-    }
+    };
+
+    const onRefresh = async () => {
+        setLoading(true);
+        await loadVideos(true);
+    };
+
+    const onReloadPress = async () => {
+        setError("");
+        await loadVideos(true);
+    };
 
     useEffect(() => {
         setLoading(true);
@@ -57,10 +67,11 @@ export default function HomeScreen () {
                         >Selected PeerTube instance might be down</ThemedText>
                         <ThemedText style={{fontWeight: "bold"}}>Error message:</ThemedText>
                         <ThemedText style={{color: "red"}}>{error}</ThemedText>
-                        <ThemedButton title={"Reload"} style={{marginTop: 10}} onPress={() => {
-                            setError("");
-                            loadVideos(false)
-                        }} />
+                        <ThemedButton
+                            title={"Reload"}
+                            style={{marginTop: 10}}
+                            onPress={onReloadPress}
+                        />
                     </>
                 </View>
             }
@@ -84,6 +95,14 @@ export default function HomeScreen () {
                     */}
                     <ContentFilters/>
                     <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={loading}
+                                onRefresh={onRefresh}
+                                colors={[Colors.emphasised.color]}
+                                tintColor={Colors.emphasised.color}
+                            />
+                        }
                         style={[{flex: 1}, theme.dark
                             ? {backgroundColor: Colors.dark.backgroundColor}
                             : {backgroundColor: Colors.light.backgroundColor}]
