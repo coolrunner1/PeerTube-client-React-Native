@@ -3,18 +3,20 @@ import {ActivityIndicator, ScrollView, StyleSheet} from "react-native";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setSelectedFilter} from "@/slices/filtersSlice";
 import {ContentFilterButton} from "@/components/Home/ContentFilterButton";
+import {RootState} from "@/state/store";
 
 export const ContentFilters = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [loaded, setLoaded] = useState(false);
     const theme = useTheme();
     const dispatch = useDispatch();
+    const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
     useEffect(() => {
-        fetch("https://tinkerbetter.tube/api/v1/videos/categories")
+        fetch(`${currentInstance}/api/v1/videos/categories`)
             .then((res) => res.json())
             .then((json) => {setCategories(["All", ...Object.values(json) as string[]]); setLoaded(true);})
             .catch((error) => console.error(error));

@@ -30,7 +30,7 @@ export const VideoEntry = (
                 }
             />
             <View style={{flexShrink: 1}}>
-                <ThemedText style={{fontWeight: "bold", marginBottom: 2}}>{props.title.substring(0, 70)+(props.title.length > 70 ? "..." : "")}</ThemedText>
+                <ThemedText style={styles.title}>{props.title.substring(0, 60)+(props.title.length > 60 ? "..." : "")}</ThemedText>
                 <ThemedText>
                     {props.isLive &&
                         <ThemedText style={{color: Colors.emphasised.color}}>Live </ThemedText>}{props.channelDisplayName}</ThemedText>
@@ -45,11 +45,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         gap: 10,
-
         width: "100%",
     },
     image: {
         width: 140,
         height: 80,
+    },
+    title: {
+        fontWeight: "bold",
+        marginBottom: 2
     }
 })

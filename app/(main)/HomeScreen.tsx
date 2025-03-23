@@ -11,6 +11,8 @@ import {Header} from "@/components/Home/Header";
 import {ContentFilters} from "@/components/Home/ContentFilters";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
+import {ThemedButton} from "@/components/Global/ThemedButton";
+import {FontAwesome} from "@expo/vector-icons";
 
 export default function HomeScreen () {
     const theme = useTheme();
@@ -20,9 +22,10 @@ export default function HomeScreen () {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
+    const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://tinkerbetter.tube/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
+        await fetch(`${currentInstance}/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -35,7 +38,7 @@ export default function HomeScreen () {
     useEffect(() => {
         setLoading(true);
         loadVideos(true);
-    }, [selectedFilter]);
+    }, [selectedFilter, currentInstance]);
 
     useEffect(() => {
         loadVideos(false);
@@ -54,6 +57,10 @@ export default function HomeScreen () {
                         >Selected PeerTube instance might be down</ThemedText>
                         <ThemedText style={{fontWeight: "bold"}}>Error message:</ThemedText>
                         <ThemedText style={{color: "red"}}>{error}</ThemedText>
+                        <ThemedButton title={"Reload"} style={{marginTop: 10}} onPress={() => {
+                            setError("");
+                            loadVideos(false)
+                        }} />
                     </>
                 </View>
             }
@@ -70,6 +77,11 @@ export default function HomeScreen () {
             {!watch && !error &&
                 <>
                     <Header />
+                    {/*
+                    <FontAwesome name={"search"} size={50} color={"white"}/>
+                    <FontAwesome name={"compass"} size={50} color={"white"}/>
+
+                    */}
                     <ContentFilters/>
                     <ScrollView
                         style={[{flex: 1}, theme.dark
@@ -89,11 +101,11 @@ export default function HomeScreen () {
                                 <VideoEntry
                                     key={video.uuid}
                                     title={video.name}
-                                    thumbnail={`https://tinkerbetter.tube${video.thumbnailPath}`}
+                                    thumbnail={`${currentInstance}${video.thumbnailPath}`}
                                     publishedAt={video.publishedAt}
                                     views={video.views}
                                     channelDisplayName={video.channel.displayName}
-                                    onPress={() => setWatch(`https://tinkerbetter.tube${video.embedPath}`)}
+                                    onPress={() => setWatch(`${currentInstance}${video.embedPath}`)}
                                     isLive={video.isLive}
                                     nsfw={video.nsfw}
                                 />
