@@ -22,8 +22,8 @@ export default function RootLayout() {
                 <Stack.Navigator>
                     <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
                     <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="registration" component={Registration} options={{ headerShown: false }} />
-                    <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false }} />
+                    <Stack.Screen name="registration" component={Registration} options={{ headerShown: false}} />
+                    <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false, orientation: "all" }} />
                 </Stack.Navigator>
                 <StatusBar style="auto" />
             </ThemeProvider>

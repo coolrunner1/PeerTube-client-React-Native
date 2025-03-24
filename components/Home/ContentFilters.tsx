@@ -41,8 +41,8 @@ export const ContentFilters = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 5,
-        maxHeight: 50,
+        maxHeight: 53,
         padding: 5,
+        paddingTop: 8
     },
 })

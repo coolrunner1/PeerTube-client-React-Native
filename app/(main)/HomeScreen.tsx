@@ -1,4 +1,4 @@
-import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl} from "react-native";
+import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList} from "react-native";
 import ScrollView = Animated.ScrollView;
 import {useEffect, useState} from "react";
 import {VideoEntry} from "@/components/Home/VideoEntry";
@@ -23,6 +23,8 @@ export default function HomeScreen () {
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
+
+    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
         await fetch(`${currentInstance}/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
@@ -57,10 +59,7 @@ export default function HomeScreen () {
     return (
         <>
             {loading && error &&
-                <View style={[{flex: 1, justifyContent: "center", alignItems: "center"}, theme.dark
-                    ? {backgroundColor: Colors.dark.backgroundColor}
-                    : {backgroundColor: Colors.light.backgroundColor}]
-                }>
+                <View style={[styles.container, {backgroundColor: backgroundColor}]}>
                     <>
                         <ThemedText
                             style={{fontSize: 18, fontWeight: "bold", marginBottom: 5}}
@@ -88,50 +87,46 @@ export default function HomeScreen () {
             {!watch && !error &&
                 <>
                     <Header />
+                    <ContentFilters/>
                     {/*
                     <FontAwesome name={"search"} size={50} color={"white"}/>
                     <FontAwesome name={"compass"} size={50} color={"white"}/>
-
                     */}
-                    <ContentFilters/>
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={loading}
-                                onRefresh={onRefresh}
-                                colors={[Colors.emphasised.color]}
-                                tintColor={Colors.emphasised.color}
-                            />
+                    <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+                        {loading &&
+                            <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
                         }
-                        style={[{flex: 1}, theme.dark
-                            ? {backgroundColor: Colors.dark.backgroundColor}
-                            : {backgroundColor: Colors.light.backgroundColor}]
-                        }
-                        onScroll={(e)=>{
-                            let paddingToBottom = 10;
-                            paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-                            if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-                                setEndOfScreen(true);
-                            }
-                        }}
-                    >
-                        <View style={styles.container}>
-                            {!loading && videos.map((video) => (
-                                <VideoEntry
-                                    key={video.uuid}
-                                    title={video.name}
-                                    thumbnail={`${currentInstance}${video.thumbnailPath}`}
-                                    publishedAt={video.publishedAt}
-                                    views={video.views}
-                                    channelDisplayName={video.channel.displayName}
-                                    onPress={() => setWatch(`${currentInstance}${video.embedPath}`)}
-                                    isLive={video.isLive}
-                                    nsfw={video.nsfw}
+                        {!loading &&
+                            <View style={styles.flatListContainer}>
+                                <FlatList
+                                    data={videos}
+                                    keyExtractor={(item) => item.uuid}
+                                    renderItem={({ item }) => (
+                                        <VideoEntry
+                                            title={item.name}
+                                            thumbnail={`${currentInstance}${item.thumbnailPath}`}
+                                            publishedAt={item.publishedAt}
+                                            views={item.views}
+                                            channelDisplayName={item.channel.displayName}
+                                            onPress={() => setWatch(`${currentInstance}${item.embedPath}`)}
+                                            isLive={item.isLive}
+                                            nsfw={item.nsfw}
+                                        />
+                                    )}
+                                    ItemSeparatorComponent={() => <View style={{height: 10}} />}
+                                    style={{flex:1}                                    }
+                                    onScroll={(e)=>{
+                                        let paddingToBottom = 10;
+                                        paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+                                        if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
+                                            setEndOfScreen(true);
+                                        }
+                                    }}
+                                    ListFooterComponent={endOfScreen ? <ActivityIndicator color={Colors.emphasised.backgroundColor}/> : <></>}
                                 />
-                            ))}
-                            {endOfScreen && <ActivityIndicator color={Colors.emphasised.backgroundColor}/>}
-                        </View>
-                    </ScrollView>
+                            </View>
+                        }
+                    </View>
                 </>
             }
         </>
@@ -140,6 +135,11 @@ export default function HomeScreen () {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    flatListContainer: {
         flex: 1,
         marginHorizontal: "auto",
         marginTop: 10,
