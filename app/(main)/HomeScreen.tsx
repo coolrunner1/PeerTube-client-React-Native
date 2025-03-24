@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     flatListContainer: {
         flex: 1,
         marginHorizontal: "auto",
-        marginTop: 10,
-        paddingHorizontal: 5,
+        marginTop: 5,
+        paddingHorizontal: 10,
         gap: 15,
         maxWidth: 900,
     }
