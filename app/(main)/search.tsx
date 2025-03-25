@@ -73,7 +73,9 @@ const SepiaSearch = () => {
             {!watch && !error &&
                 <>
                     <Header />
-                    <ContentFilters/>
+                    <ContentFilters
+                        onFiltersMenuButtonPress={() => {}}
+                    />
                     {/*
                     <FontAwesome name={"search"} size={50} color={"white"}/>
                     <FontAwesome name={"compass"} size={50} color={"white"}/>

@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ffa6fdf-6e33-497e-96aa-52785467c8eb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/(main)/search.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Global/IconButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Search/SearchError.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/types/SepiaSearchVideo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(main)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/_layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(main)/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(main)/subscriptions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/subscriptions.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Home/ContentFilterButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/ContentFilterButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Home/ContentFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/ContentFilters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Home/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Home/VideoEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/VideoEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Home/VideoPlayer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/VideoPlayer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(main)/search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/search.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Search/ContentFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Search/ContentFilters.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +39,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/igor/Projects/React-Native-6-semester/components/Global",
+    "last_opened_file_path": "/home/igor/Projects/React-Native-6-semester/components/Search",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -70,6 +61,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components/Search" />
       <recent name="$PROJECT_DIR$/components/Global" />
       <recent name="$PROJECT_DIR$/app/(main)" />
       <recent name="$PROJECT_DIR$/assets/images" />
@@ -100,7 +92,7 @@
       <workItem from="1742125131797" duration="15856000" />
       <workItem from="1742451706605" duration="11178000" />
       <workItem from="1742628568873" duration="2152000" />
-      <workItem from="1742912284553" duration="8992000" />
+      <workItem from="1742912284553" duration="11885000" />
     </task>
     <servers />
   </component>

@@ -9,7 +9,11 @@ import {ContentFilterButton} from "@/components/Search/ContentFilterButton";
 import {RootState} from "@/state/store";
 import {IconButton} from "@/components/Global/IconButton";
 
-export const ContentFilters = () => {
+export const ContentFilters = (
+    props: {
+        onFiltersMenuButtonPress: () => void;
+    }
+) => {
     const [categories, setCategories] = useState<string[]>([]);
     const [loaded, setLoaded] = useState(false);
     const theme = useTheme();
@@ -32,7 +36,7 @@ export const ContentFilters = () => {
                 <>
                     <IconButton
                         name={"filter"}
-                        onPress={() => {}}
+                        onPress={props.onFiltersMenuButtonPress}
                     />
                     {categories.map((category, key) =>
                         <ContentFilterButton

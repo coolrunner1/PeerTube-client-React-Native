@@ -1,6 +1,13 @@
-import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList} from "react-native";
+import {
+    StyleSheet,
+    ActivityIndicator,
+    Animated,
+    Button,
+    View,
+    FlatList,
+} from "react-native";
 import ScrollView = Animated.ScrollView;
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
@@ -14,6 +21,7 @@ import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {FontAwesome} from "@expo/vector-icons";
 import {SearchError} from "@/components/Search/SearchError";
+import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 
 const HomeScreen = () => {
     const theme = useTheme();
@@ -22,6 +30,7 @@ const HomeScreen = () => {
     const [watch, setWatch] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
+    const [showFilters, setShowFilters] = useState<boolean>(false);
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
@@ -75,11 +84,13 @@ const HomeScreen = () => {
             {!watch && !error &&
                 <>
                     <Header />
-                    <ContentFilters/>
-                    {/*
-                    <FontAwesome name={"search"} size={50} color={"white"}/>
-                    <FontAwesome name={"compass"} size={50} color={"white"}/>
-                    */}
+                    <ContentFilters
+                        onFiltersMenuButtonPress={() => setShowFilters(true)}
+                    />
+                    <HomeFiltersMenu
+                        showFilters={showFilters}
+                        onCloseButtonPress={() => setShowFilters(false)}
+                    />
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
                         {loading &&
                             <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
@@ -134,7 +145,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         gap: 15,
         maxWidth: 900,
-    }
+    },
 });
 
 export default HomeScreen;
