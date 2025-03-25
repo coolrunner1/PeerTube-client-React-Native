@@ -5,8 +5,9 @@ import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setSelectedFilter} from "@/slices/filtersSlice";
-import {ContentFilterButton} from "@/components/Home/ContentFilterButton";
+import {ContentFilterButton} from "@/components/Search/ContentFilterButton";
 import {RootState} from "@/state/store";
+import {IconButton} from "@/components/Global/IconButton";
 
 export const ContentFilters = () => {
     const [categories, setCategories] = useState<string[]>([]);
@@ -28,13 +29,21 @@ export const ContentFilters = () => {
             : {backgroundColor: Colors.light.backgroundColor}]}>
             {!loaded && <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>}
             {loaded &&
-                categories.map((category, key) =>
-                    <ContentFilterButton
-                        key={key}
-                        id={key}
-                        title={category}
-                        onPress={() => {dispatch(setSelectedFilter(key))}}
-                    />)}
+                <>
+                    <IconButton
+                        name={"filter"}
+                        onPress={() => {}}
+                    />
+                    {categories.map((category, key) =>
+                        <ContentFilterButton
+                            key={key}
+                            id={key}
+                            title={category}
+                            onPress={() => {dispatch(setSelectedFilter(key))}}
+                        />)
+                    }
+                </>
+            }
         </ScrollView>
     );
 };

@@ -6,29 +6,27 @@ import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
-import {Video} from "@/types/Video";
+import {SepiaSearchVideo} from "@/types/SepiaSearchVideo";
 import {Header} from "@/components/Search/Header";
 import {ContentFilters} from "@/components/Search/ContentFilters";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
-import {FontAwesome} from "@expo/vector-icons";
 import {SearchError} from "@/components/Search/SearchError";
 
-const HomeScreen = () => {
+const SepiaSearch = () => {
     const theme = useTheme();
-    const [videos, setVideos] = useState<Video[]>([]);
+    const [videos, setVideos] = useState<SepiaSearchVideo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [watch, setWatch] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
-    const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`${currentInstance}/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
+        await fetch(`https://sepiasearch.org/api/v1/search/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -51,7 +49,7 @@ const HomeScreen = () => {
     useEffect(() => {
         setLoading(true);
         loadVideos(true);
-    }, [selectedFilter, currentInstance]);
+    }, [selectedFilter]);
 
     useEffect(() => {
         loadVideos(false);
@@ -64,7 +62,7 @@ const HomeScreen = () => {
             }
             {watch &&
                 <ScrollView
-                style={{marginTop: 20 }}>
+                    style={{marginTop: 20 }}>
                     <Button
                         title="Back"
                         onPress={() => {setWatch("")}}
@@ -92,11 +90,11 @@ const HomeScreen = () => {
                                     renderItem={({ item }) => (
                                         <VideoEntry
                                             title={item.name}
-                                            thumbnail={`${currentInstance}${item.thumbnailPath}`}
+                                            thumbnail={item.thumbnailUrl}
                                             publishedAt={item.publishedAt}
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
-                                            onPress={() => setWatch(`${currentInstance}${item.embedPath}`)}
+                                            onPress={() => setWatch(item.embedUrl)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}
                                         />
@@ -137,4 +135,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default HomeScreen;
+export default SepiaSearch;

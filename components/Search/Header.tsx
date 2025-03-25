@@ -1,14 +1,14 @@
 import {StyleSheet, View} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
-import {FontAwesome} from "@expo/vector-icons";
+import {FontAwesome6} from "@expo/vector-icons";
 
 export const Header = () => {
     return (
         <View style={styles.header}>
-            <FontAwesome name={"compass"} size={40} color={"white"}/>
+            <FontAwesome6 name={"compass"} size={40} color={"white"}/>
             <ThemedText style={{fontWeight: "bold", fontSize: 20,}}>Trending</ThemedText>
-            <FontAwesome name={"search"} size={30} color={"white"}/>
+            <FontAwesome6 name={"magnifying-glass"} size={30} color={"white"}/>
         </View>
     );
 };

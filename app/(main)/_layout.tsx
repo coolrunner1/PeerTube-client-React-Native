@@ -4,6 +4,7 @@ import Options from "@/app/(main)/options";
 import Subscriptions from "@/app/(main)/subscriptions";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
+import SepiaSearch from "@/app/(main)/search";
 
 
 export default function HomeLayout() {
@@ -20,7 +21,7 @@ export default function HomeLayout() {
             <Tab.Screen
                 name={"home"}
                 options={{
-                    title: "Home",
+                    title: "Search",
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
                 }}
                 component={HomeScreen}
@@ -31,7 +32,7 @@ export default function HomeLayout() {
                     title: "Sepia Search",
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
                 }}
-                component={Subscriptions}
+                component={SepiaSearch}
             />
             <Tab.Screen
                 name={"subscriptions"}

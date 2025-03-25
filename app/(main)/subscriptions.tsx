@@ -1,5 +1,4 @@
 import {ThemedText} from "@/components/Global/ThemedText";
-import {Button} from "react-native";
 
 const Subscriptions = () => {
     return (
