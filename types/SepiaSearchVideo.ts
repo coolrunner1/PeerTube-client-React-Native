@@ -4,6 +4,7 @@ export type SepiaSearchVideo = {
     id: number;
     name: string;
     uuid: string;
+    host: string;
     thumbnailPath: string;
     thumbnailUrl: string;
     publishedAt: string;

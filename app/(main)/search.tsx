@@ -1,4 +1,4 @@
-import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList} from "react-native";
+import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList, Alert} from "react-native";
 import ScrollView = Animated.ScrollView;
 import {useEffect, useState} from "react";
 import {VideoEntry} from "@/components/Search/VideoEntry";
@@ -14,7 +14,7 @@ import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {SearchError} from "@/components/Search/SearchError";
 
-const SepiaSearch = () => {
+const SepiaSearch = (navigation: any) => {
     const theme = useTheme();
     const [videos, setVideos] = useState<SepiaSearchVideo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -55,6 +55,12 @@ const SepiaSearch = () => {
         loadVideos(false);
     }, [endOfScreen]);
 
+    useEffect(() => {
+        Alert.alert('Warning', 'Sepia search is a global search utility that gathers videos from hundreds of instances. You might come across illegal content, nsfw content and insane conspiracy theories. Proceed with discretion.', [
+            {text: 'OK'},
+        ]);
+    }, []);
+
     return (
         <>
             {loading && error &&
@@ -87,7 +93,7 @@ const SepiaSearch = () => {
                         {!loading &&
                             <View style={styles.flatListContainer}>
                                 <FlatList
-                                    data={videos}
+                                    data={videos.filter((video: SepiaSearchVideo) => !video.embedUrl.includes("pocketnet.app") && !video.embedUrl.includes("pony"))}
                                     keyExtractor={(item) => item.uuid}
                                     renderItem={({ item }) => (
                                         <VideoEntry
