@@ -14,7 +14,7 @@ import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {FontAwesome} from "@expo/vector-icons";
 
-export default function HomeScreen () {
+const HomeScreen = () => {
     const theme = useTheme();
     const [videos, setVideos] = useState<Video[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -148,3 +148,5 @@ const styles = StyleSheet.create({
         maxWidth: 900,
     }
 });
+
+export default HomeScreen;

@@ -3,22 +3,23 @@ import { StyleProp, Text, TextStyle } from "react-native";
 import { Colors } from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
 
-interface ThemedTextProps {
-    style?: StyleProp<TextStyle>;
-    children: React.ReactNode;
-    inverseColor?: boolean,
-    onPress?: () => void;
-}
 
-export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverseColor, onPress }) => {
+export const ThemedText = (
+    props: {
+        style?: StyleProp<TextStyle>;
+        children: React.ReactNode;
+        inverseColor?: boolean,
+        onPress?: () => void;
+    }
+) => {
     const theme = useTheme();
 
     return (
         <Text
-            onPress={onPress}
+            onPress={props.onPress}
             style={[
                 {
-                    color: inverseColor
+                    color: props.inverseColor
                         ? theme.dark
                             ? Colors.light.color
                             : Colors.dark.color
@@ -26,10 +27,10 @@ export const ThemedText: React.FC<ThemedTextProps> = ({ style, children, inverse
                             ? Colors.dark.color
                             : Colors.light.color,
                 },
-                style,
+                props.style,
             ]}
         >
-            {children}
+            {props.children}
         </Text>
     );
 };

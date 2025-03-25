@@ -7,7 +7,7 @@ import {useTheme} from "@react-navigation/core";
 import {useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Registration({navigation}: {navigation: any}) {
+const Registration = ({navigation}: {navigation: any}) => {
     const theme = useTheme();
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -105,4 +105,6 @@ const styles = StyleSheet.create({
     errorMessage: {
         color: "red"
     }
-})
+});
+
+export default Registration;

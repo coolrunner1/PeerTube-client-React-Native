@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import HomeScreen from "@/app/(main)/HomeScreen";
-import Options from "@/app/(main)/Options";
-import Subscriptions from "@/app/(main)/Subscriptions";
+import HomeScreen from "@/app/(main)/home";
+import Options from "@/app/(main)/options";
+import Subscriptions from "@/app/(main)/subscriptions";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
 
@@ -24,6 +24,14 @@ export default function HomeLayout() {
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
                 }}
                 component={HomeScreen}
+            />
+            <Tab.Screen
+                name={"search"}
+                options={{
+                    title: "Sepia Search",
+                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
+                }}
+                component={Subscriptions}
             />
             <Tab.Screen
                 name={"subscriptions"}

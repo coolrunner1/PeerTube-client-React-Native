@@ -1,13 +1,13 @@
-import {Button, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {Colors} from "@/constants/Colors";
-import {useNavigation, useTheme} from "@react-navigation/core";
+import {useTheme} from "@react-navigation/core";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Login({navigation}: {navigation: any}) {
+const Login = ({navigation}: {navigation: any}) => {
     const theme = useTheme();
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -80,4 +80,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     }
-})
+});
+
+export default Login;

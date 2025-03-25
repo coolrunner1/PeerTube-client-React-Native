@@ -1,10 +1,8 @@
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Button} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useNavigation} from "@react-navigation/core";
 
-export default function Options() {
-    const navigation = useNavigation();
+const Options = ({navigation}: {navigation: any}) => {
 
     const logOut = async () => {
         const login = await AsyncStorage.getItem("login");
@@ -28,3 +26,5 @@ export default function Options() {
         </>
     );
 };
+
+export default Options;
