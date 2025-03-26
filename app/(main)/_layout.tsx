@@ -21,7 +21,7 @@ export default function HomeLayout() {
             <Tab.Screen
                 name={"home"}
                 options={{
-                    title: "Search",
+                    title: "Home",
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
                 }}
                 component={HomeScreen}

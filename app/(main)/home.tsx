@@ -4,7 +4,7 @@ import {
     Animated,
     Button,
     View,
-    FlatList,
+    FlatList, RefreshControl,
 } from "react-native";
 import ScrollView = Animated.ScrollView;
 import React, {useEffect, useState} from "react";
@@ -113,6 +113,16 @@ const HomeScreen = () => {
                                         />
                                     )}
                                     ItemSeparatorComponent={() => <View style={{height: 10}} />}
+                                    refreshControl={
+                                        <RefreshControl
+                                            refreshing={loading}
+                                            onRefresh={onRefresh}
+                                            colors={[Colors.emphasised.color]}
+                                            tintColor={Colors.emphasised.color}
+                                        />
+
+
+                                    }
                                     style={{flex:1}}
                                     onScroll={(e)=>{
                                         let paddingToBottom = 10;
