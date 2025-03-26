@@ -120,8 +120,6 @@ const HomeScreen = () => {
                                             colors={[Colors.emphasised.color]}
                                             tintColor={Colors.emphasised.color}
                                         />
-
-
                                     }
                                     style={{flex:1}}
                                     onScroll={(e)=>{

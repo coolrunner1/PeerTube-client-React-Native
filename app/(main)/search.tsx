@@ -1,6 +1,6 @@
 import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList, Alert} from "react-native";
 import ScrollView = Animated.ScrollView;
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
@@ -93,7 +93,7 @@ const SepiaSearch = (navigation: any) => {
                         {!loading &&
                             <View style={styles.flatListContainer}>
                                 <FlatList
-                                    data={videos.filter((video: SepiaSearchVideo) => !video.embedUrl.includes("pocketnet.app") && !video.embedUrl.includes("pony"))}
+                                    data={videos.filter((video: SepiaSearchVideo) => !video.embedUrl.includes("pocketnet.app") && !(video.embedUrl.includes("pony") && video.nsfw))}
                                     keyExtractor={(item) => item.uuid}
                                     renderItem={({ item }) => (
                                         <VideoEntry
@@ -108,6 +108,14 @@ const SepiaSearch = (navigation: any) => {
                                         />
                                     )}
                                     ItemSeparatorComponent={() => <View style={{height: 10}} />}
+                                    refreshControl={
+                                        <RefreshControl
+                                            refreshing={loading}
+                                            onRefresh={onRefresh}
+                                            colors={[Colors.emphasised.color]}
+                                            tintColor={Colors.emphasised.color}
+                                        />
+                                    }
                                     style={{flex:1}}
                                     onScroll={(e)=>{
                                         let paddingToBottom = 10;
