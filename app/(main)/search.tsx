@@ -1,6 +1,6 @@
 import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList, Alert} from "react-native";
 import ScrollView = Animated.ScrollView;
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
@@ -13,6 +13,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {SearchError} from "@/components/Search/SearchError";
+import {BlockedInstances} from "@/constants/BlockedInstances";
 
 const SepiaSearch = (navigation: any) => {
     const theme = useTheme();
@@ -22,11 +23,12 @@ const SepiaSearch = (navigation: any) => {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
+    const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://sepiasearch.org/api/v1/search/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
+        await fetch(`https://sepiasearch.org/api/v1/search/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}&blockedHosts[]=${blockedInstances.current}&blockedAccounts=equiphile`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -34,6 +36,7 @@ const SepiaSearch = (navigation: any) => {
             })
             .catch((err) => {console.error(err); setError(err.toString())});
         setEndOfScreen(false);
+        console.log(videos);
     };
 
     const onRefresh = async () => {
@@ -59,6 +62,7 @@ const SepiaSearch = (navigation: any) => {
         Alert.alert('Warning', 'Sepia search is a global search utility that gathers videos from hundreds of instances. You might come across illegal content, nsfw content and insane conspiracy theories. Proceed with discretion.', [
             {text: 'OK'},
         ]);
+        console.log(blockedInstances);
     }, []);
 
     return (
@@ -93,7 +97,7 @@ const SepiaSearch = (navigation: any) => {
                         {!loading &&
                             <View style={styles.flatListContainer}>
                                 <FlatList
-                                    data={videos.filter((video: SepiaSearchVideo) => !video.embedUrl.includes("pocketnet.app") && !(video.embedUrl.includes("pony") && video.nsfw))}
+                                    data={videos.filter((video: SepiaSearchVideo) => !(video.embedUrl.includes("pony") && video.nsfw))}
                                     keyExtractor={(item) => item.uuid}
                                     renderItem={({ item }) => (
                                         <VideoEntry
