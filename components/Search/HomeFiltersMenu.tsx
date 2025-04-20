@@ -18,6 +18,9 @@ export const HomeFiltersMenu = (
                 backgroundColor: "#000000af",
             }}>
                 <View style={styles.modalView}>
+                    <Text>Is live</Text>
+                    <Text>Allow nsfw</Text>
+                    <Text>Sort</Text>
                     <Text>Hello World!</Text>
                     <Pressable
                         onPress={props.onCloseButtonPress}>
