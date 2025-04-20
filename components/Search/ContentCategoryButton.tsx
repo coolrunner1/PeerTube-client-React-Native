@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useEffect, useState} from "react";
 
-export const ContentFilterButton = (
+export const ContentCategoryButton = (
     props: {
         id: number;
         title: string;
@@ -14,16 +14,16 @@ export const ContentFilterButton = (
     }
 ) => {
     const theme = useTheme();
-    const selectedFilter = useSelector((state: RootState)=> state.filters.selectedFilter);
+    const selectedCategory = useSelector((state: RootState)=> state.filters.selectedCategory);
     const [selected, setSelected] = useState<boolean>(false);
 
     useEffect(() => {
-        if (selectedFilter === props.id) {
+        if (selectedCategory === props.id) {
             setSelected(true);
             return;
         }
         setSelected(false);
-    }, [selectedFilter]);
+    }, [selectedCategory]);
 
     return (
         <Pressable

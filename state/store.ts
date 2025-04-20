@@ -1,6 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import filtersSlice from "@/slices/filtersSlice";
-import instancesSlice from "@/slices/instancesSlice";
+import instancesSlice, {setCurrentInstance} from "@/slices/instancesSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const store = configureStore({
     reducer: {

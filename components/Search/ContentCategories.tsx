@@ -4,14 +4,16 @@ import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectedFilter} from "@/slices/filtersSlice";
-import {ContentFilterButton} from "@/components/Search/ContentFilterButton";
+import {setSelectedCategory} from "@/slices/filtersSlice";
+import {ContentCategoryButton} from "@/components/Search/ContentCategoryButton";
 import {RootState} from "@/state/store";
 import {IconButton} from "@/components/Global/IconButton";
+import {SepiaSearchCategories} from "@/constants/SepiaSearchCategories";
 
-export const ContentFilters = (
+export const ContentCategories = (
     props: {
         onFiltersMenuButtonPress: () => void;
+        sepiaSearch?: boolean;
     }
 ) => {
     const [categories, setCategories] = useState<string[]>([]);
@@ -21,11 +23,17 @@ export const ContentFilters = (
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
     useEffect(() => {
+        if (props.sepiaSearch) {
+            setCategories(SepiaSearchCategories);
+            setLoaded(true);
+            return;
+        }
+        if (!currentInstance) return;
         fetch(`${currentInstance}/api/v1/videos/categories`)
             .then((res) => res.json())
             .then((json) => {setCategories(["All", ...Object.values(json) as string[]]); setLoaded(true);})
             .catch((error) => console.error(error));
-    }, []);
+    }, [currentInstance]);
 
     return (
         <ScrollView horizontal={true} style={[styles.container, theme.dark
@@ -39,11 +47,11 @@ export const ContentFilters = (
                         onPress={props.onFiltersMenuButtonPress}
                     />
                     {categories.map((category, key) =>
-                        <ContentFilterButton
+                        <ContentCategoryButton
                             key={key}
                             id={key}
                             title={category}
-                            onPress={() => {dispatch(setSelectedFilter(key))}}
+                            onPress={() => {dispatch(setSelectedCategory(key))}}
                         />)
                     }
                 </>

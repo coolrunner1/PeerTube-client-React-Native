@@ -8,7 +8,7 @@ import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {SepiaSearchVideo} from "@/types/SepiaSearchVideo";
 import {Header} from "@/components/Search/Header";
-import {ContentFilters} from "@/components/Search/ContentFilters";
+import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
@@ -22,13 +22,14 @@ const SepiaSearch = (navigation: any) => {
     const [watch, setWatch] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
-    const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
+    const [search, setSearch] = useState<string>("");
+    const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
     const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://sepiasearch.org/api/v1/search/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}&blockedHosts[]=${blockedInstances.current}&blockedAccounts=equiphile`)
+        await fetch(`https://sepiasearch.org/api/v1/search/videos?${search ? `search=${search}&` : ""}start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}&blockedHosts[]=${blockedInstances.current}&blockedAccounts=equiphile`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -52,7 +53,7 @@ const SepiaSearch = (navigation: any) => {
     useEffect(() => {
         setLoading(true);
         loadVideos(true);
-    }, [selectedFilter]);
+    }, [selectedCategory, search]);
 
     useEffect(() => {
         loadVideos(false);
@@ -62,7 +63,6 @@ const SepiaSearch = (navigation: any) => {
         Alert.alert('Warning', 'Sepia search is a global search utility that gathers videos from hundreds of instances. You might come across illegal content, nsfw content and insane conspiracy theories. Proceed with discretion.', [
             {text: 'OK'},
         ]);
-        console.log(blockedInstances);
     }, []);
 
     return (
@@ -82,14 +82,11 @@ const SepiaSearch = (navigation: any) => {
             }
             {!watch && !error &&
                 <>
-                    <Header />
-                    <ContentFilters
+                    <Header setSearch={setSearch} />
+                    <ContentCategories
                         onFiltersMenuButtonPress={() => {}}
+                        sepiaSearch={true}
                     />
-                    {/*
-                    <FontAwesome name={"search"} size={50} color={"white"}/>
-                    <FontAwesome name={"compass"} size={50} color={"white"}/>
-                    */}
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
                         {loading &&
                             <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>

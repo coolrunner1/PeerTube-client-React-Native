@@ -15,7 +15,7 @@ import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Video} from "@/types/Video";
 import {Header} from "@/components/Search/Header";
-import {ContentFilters} from "@/components/Search/ContentFilters";
+import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {ThemedButton} from "@/components/Global/ThemedButton";
@@ -31,13 +31,14 @@ const HomeScreen = () => {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [showFilters, setShowFilters] = useState<boolean>(false);
-    const selectedFilter = useSelector((state: RootState) => state.filters.selectedFilter);
+    const [search, setSearch] = useState<string>("");
+    const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`${currentInstance}/api/v1/videos?start=${clearVideos ? 0 : videos.length}${selectedFilter ? `&categoryOneOf=${selectedFilter}` : ""}`)
+        await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -58,11 +59,13 @@ const HomeScreen = () => {
     };
 
     useEffect(() => {
+        if (!currentInstance) return;
         setLoading(true);
         loadVideos(true);
-    }, [selectedFilter, currentInstance]);
+    }, [selectedCategory, search, currentInstance]);
 
     useEffect(() => {
+        if (!currentInstance) return;
         loadVideos(false);
     }, [endOfScreen]);
 
@@ -83,8 +86,8 @@ const HomeScreen = () => {
             }
             {!watch && !error &&
                 <>
-                    <Header />
-                    <ContentFilters
+                    <Header setSearch={setSearch} />
+                    <ContentCategories
                         onFiltersMenuButtonPress={() => setShowFilters(true)}
                     />
                     <HomeFiltersMenu
@@ -92,11 +95,9 @@ const HomeScreen = () => {
                         onCloseButtonPress={() => setShowFilters(false)}
                     />
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
-                        {loading &&
-                            <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
-                        }
-                        {!loading &&
-                            <View style={styles.flatListContainer}>
+                        {loading
+                            ? <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
+                            : <View style={styles.flatListContainer}>
                                 <FlatList
                                     data={videos}
                                     keyExtractor={(item) => item.uuid}

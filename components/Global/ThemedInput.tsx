@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, useColorScheme} from "react-native";
+import {StyleProp, StyleSheet, TextInput, TextStyle, useColorScheme} from "react-native";
 import {Colors} from "@/constants/Colors";
 
 export const ThemedInput = (
@@ -7,6 +7,7 @@ export const ThemedInput = (
         onChangeText: (value: string) => void;
         placeholderTextColor?: string;
         secureTextEntry?: boolean;
+        style?: StyleProp<TextStyle>;
         value: string;
     }
 ) => {
@@ -21,7 +22,7 @@ export const ThemedInput = (
             onChangeText={props.onChangeText}
             value={props.value}
             secureTextEntry={props.secureTextEntry}
-            style={[styles.input, theme === "dark" ? styles.dark : styles.light]}
+            style={[styles.input, theme === "dark" ? styles.dark : styles.light, props.style]}
         />
     );
 };

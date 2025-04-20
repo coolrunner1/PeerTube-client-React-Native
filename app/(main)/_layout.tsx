@@ -5,10 +5,21 @@ import Subscriptions from "@/app/(main)/subscriptions";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
 import SepiaSearch from "@/app/(main)/search";
+import {useEffect} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {setCurrentInstance} from "@/slices/instancesSlice";
+import {useDispatch} from "react-redux";
 
 
 export default function HomeLayout() {
     const Tab = createBottomTabNavigator();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        AsyncStorage.getItem("instance")
+            .then((instance) =>
+                instance ? dispatch(setCurrentInstance(instance)) : dispatch(setCurrentInstance("https://tilvids.com")));
+    }, []);
 
     return (
         <Tab.Navigator
@@ -34,14 +45,14 @@ export default function HomeLayout() {
                 }}
                 component={SepiaSearch}
             />
-            <Tab.Screen
+            {/*<Tab.Screen
                 name={"subscriptions"}
                 options={{
                     title: "Subscriptions",
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="inbox" color={color} />,
                 }}
                 component={Subscriptions}
-            />
+            />*/}
             <Tab.Screen
                 name={"options"}
                 options={{
