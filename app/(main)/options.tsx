@@ -1,5 +1,5 @@
 import {ThemedText} from "@/components/Global/ThemedText";
-import {Alert, View, StyleSheet} from "react-native";
+import {Alert, View, StyleSheet, ScrollView} from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ThemedInput} from "@/components/Global/ThemedInput";
@@ -61,7 +61,7 @@ const Options = ({navigation}: {navigation: any}) => {
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     return (
-        <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+        <ScrollView style={[styles.container, {backgroundColor: backgroundColor}]}>
             {/**
              <ThemedText style={{marginTop: 50}}>Not implemented!</ThemedText>
              <Button title="Log in" onPress={() => {}} />
@@ -69,6 +69,10 @@ const Options = ({navigation}: {navigation: any}) => {
              <ThemedText>Player (builtin, webview)</ThemedText>
              */}
             <ThemedText style={styles.optionsText}>Options</ThemedText>
+            <View style={styles.sectionContainer}>
+                <ThemedText style={styles.text}>Account</ThemedText>
+                <ThemedButton title="Log out" onPress={logOut} />
+            </View>
             <View style={styles.sectionContainer}>
                 <ThemedText style={styles.text}>Instance</ThemedText>
                 <ThemedInput
@@ -106,27 +110,22 @@ const Options = ({navigation}: {navigation: any}) => {
 
                 />
             </View>
-            <View style={styles.sectionContainer}>
-                <ThemedText style={styles.text}>Account</ThemedText>
-                <ThemedButton title="Log out" onPress={logOut} />
-            </View>
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 20
+        gap: 20,
     },
     sectionContainer: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
         gap: 10,
-        maxHeight: 100,
+        maxHeight: 150,
+        marginVertical: 5,
     },
     text: {
         fontSize: 20,
@@ -135,7 +134,9 @@ const styles = StyleSheet.create({
     optionsText: {
         fontSize: 30,
         fontWeight: "bold",
-        marginBottom: 20
+        marginTop: 40,
+        marginBottom: 20,
+        alignSelf: "center",
     },
     button: {
         padding: 10,
