@@ -7,6 +7,7 @@ import {ThemedInput} from "@/components/Global/ThemedInput";
 
 export const Header = (
     props: {
+        title: string;
         setSearch: (value: string) => void;
     }
 ) => {
@@ -27,7 +28,7 @@ export const Header = (
                 </> :
                 <>
                     <View style={{padding: 10}}></View>
-                    <ThemedText style={{fontWeight: "bold", fontSize: 20}}>Trending</ThemedText>
+                    <ThemedText style={{fontWeight: "bold", fontSize: 20}}>{props.title}</ThemedText>
                     <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"} onPress={() => setShowSearch(true)} />
                 </>
                 }

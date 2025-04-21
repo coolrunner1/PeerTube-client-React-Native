@@ -1,4 +1,5 @@
 import {Channel} from "@/types/Channel";
+import {StreamingPlaylist} from "@/types/StreamingPlaylist";
 
 export type Video = {
     id: number;
@@ -11,6 +12,7 @@ export type Video = {
     dislikes: number;
     embedPath: string;
     channel: Channel;
+    streamingPlaylists:  StreamingPlaylist[];
     isLive: boolean;
     nsfw: boolean;
 }

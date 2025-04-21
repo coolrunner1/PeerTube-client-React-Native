@@ -60,6 +60,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         if (!currentInstance) return;
+        if (error) setError("");
         setLoading(true);
         loadVideos(true);
     }, [selectedCategory, search, currentInstance]);
@@ -86,7 +87,7 @@ const HomeScreen = () => {
             }
             {!currentVideo && !error &&
                 <>
-                    <Header setSearch={setSearch} />
+                    <Header setSearch={setSearch} title={"Trending"}/>
                     <ContentCategories
                         onFiltersMenuButtonPress={() => setShowFilters(true)}
                     />

@@ -11,9 +11,6 @@ export const VideoPlayer = (
         videoUrl: string,
     }
 ) => {
-    /*
-    Proper types will be added later
-    */
     const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
 
@@ -37,7 +34,7 @@ export const VideoPlayer = (
             return;
         }*/
         setVideoSource(video.streamingPlaylists[0].playlistUrl);
-        /**fetch(video.streamingPlaylists[0].files[0].metadataUrl)
+        /*fetch(video.streamingPlaylists[0].files[0].metadataUrl)
             .then(data => data.json())
             .then(json => {
                 setVideoSource(video.streamingPlaylists[0].files[0].fileUrl);

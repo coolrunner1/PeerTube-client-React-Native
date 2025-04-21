@@ -82,7 +82,7 @@ const SepiaSearch = (navigation: any) => {
             }
             {!video && !error &&
                 <>
-                    <Header setSearch={setSearch} />
+                    <Header setSearch={setSearch} title={"Sepia Search"} />
                     <ContentCategories
                         onFiltersMenuButtonPress={() => {}}
                         sepiaSearch={true}

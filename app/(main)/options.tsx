@@ -1,5 +1,5 @@
 import {ThemedText} from "@/components/Global/ThemedText";
-import {Alert, Button, View, StyleSheet} from "react-native";
+import {Alert, View, StyleSheet} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {useDispatch, useSelector} from "react-redux";
