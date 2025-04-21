@@ -12,14 +12,11 @@ import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
-import {ThemedText} from "@/components/Global/ThemedText";
 import {VideoListEntry} from "@/types/VideoListEntry";
 import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
-import {ThemedButton} from "@/components/Global/ThemedButton";
-import {FontAwesome} from "@expo/vector-icons";
 import {SearchError} from "@/components/Search/SearchError";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 

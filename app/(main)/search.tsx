@@ -5,13 +5,11 @@ import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
-import {ThemedText} from "@/components/Global/ThemedText";
 import {SepiaSearchVideo} from "@/types/SepiaSearchVideo";
 import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
-import {ThemedButton} from "@/components/Global/ThemedButton";
 import {SearchError} from "@/components/Search/SearchError";
 import {BlockedInstances} from "@/constants/BlockedInstances";
 

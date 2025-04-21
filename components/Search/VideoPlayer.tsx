@@ -1,5 +1,5 @@
 import WebView from "react-native-webview";
-import {Alert, Button, ScrollView, StyleSheet, View,} from 'react-native';
+import {Alert, Button, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import {useEvent} from "expo";
@@ -36,27 +36,21 @@ export const VideoPlayer = (
         if (video.isLive) {
             return;
         }
-        /*if (video.files.length > 0) {
+        if (Platform.OS !== "web") {
+            setVideoSource(video.streamingPlaylists[0].playlistUrl);
+            return;
+        }
+        if (video.files.length > 0) {
             setVideoSource(video.files[0].fileUrl);
             return;
-        }*/
-        setVideoSource(video.streamingPlaylists[0].playlistUrl);
-        /*fetch(video.streamingPlaylists[0].files[0].metadataUrl)
-            .then(data => data.json())
-            .then(json => {
-                setVideoSource(video.streamingPlaylists[0].files[0].fileUrl);
-                player.currentTime = json.format.duration;
-            })
-            .catch(err => Alert.alert("error", err));
-            */
+        }
+        setVideoSource(video.streamingPlaylists[0].files[0].fileUrl);
     }, [video]);
 
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.play();
     });
-
-    const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
 
     return (
         <>
@@ -72,24 +66,14 @@ export const VideoPlayer = (
                             }}
                             style={{ marginTop: 20, minWidth: 100, minHeight: 300 }}
                         /> :
-                        <>
-                            <VideoView style={styles.video} player={player} allowsFullscreen allowsPictureInPicture />
-                            <View style={styles.controlsContainer}>
-                                <Button
-                                    title={isPlaying ? 'Pause' : 'Play'}
-                                    onPress={() => {
-                                        if (isPlaying) {
-                                            player.pause();
-                                        } else {
-                                            player.play();
-                                        }
-                                    }}
-                                />
-                            </View>
-                        </>
+                        <VideoView
+                            style={styles.video}
+                            player={player}
+                            allowsFullscreen
+                            allowsPictureInPicture
+                            startsPictureInPictureAutomatically
+                        />
                     }
-
-
                     <ThemedText>Work in progress</ThemedText>
                 </ScrollView>
             }
