@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {NativeSyntheticEvent, StyleSheet, TextInputKeyPressEventData, View} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -14,17 +14,15 @@ export const Header = (
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
 
-    const onSearchButtonPress = () => {
-        props.setSearch(search);
-    }
-
     return (
         <View style={styles.header}>
             {showSearch ?
                 <>
-                    <FontAwesome6 name={"xmark"} size={25} color={"white"} onPress={() => setShowSearch(false)} />
-                    <ThemedInput style={styles.searchBar} placeholder={"Search"} onChangeText={setSearch} value={search}/>
-                    <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"} onPress={onSearchButtonPress} />
+                    <FontAwesome6 name={"xmark"} size={25} color={"white"}
+                                  onPress={() => {setShowSearch(false); props.setSearch("")}} />
+                    <ThemedInput style={styles.searchBar} placeholder={"Search"} onChangeText={setSearch} value={search} onSubmitEditing={() => props.setSearch(search)}/>
+                    <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"}
+                                  onPress={() => props.setSearch(search)}/>
                 </> :
                 <>
                     <View style={{padding: 10}}></View>
@@ -42,12 +40,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 20,
-        paddingTop: 25,
+        paddingHorizontal: 12,
+        paddingTop: 27,
         backgroundColor: Colors.emphasised.backgroundColor,
         maxHeight: 80,
     },
     searchBar: {
-        marginHorizontal: 7,
+        marginHorizontal: 10,
     }
 });

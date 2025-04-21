@@ -1,10 +1,19 @@
-import {StyleProp, StyleSheet, TextInput, TextStyle, useColorScheme} from "react-native";
+import {
+    NativeSyntheticEvent,
+    StyleProp,
+    StyleSheet,
+    TextInput,
+    TextInputKeyPressEventData,
+    TextStyle,
+    useColorScheme
+} from "react-native";
 import {Colors} from "@/constants/Colors";
 
 export const ThemedInput = (
     props: {
         placeholder: string;
         onChangeText: (value: string) => void;
+        onSubmitEditing?: () => void;
         placeholderTextColor?: string;
         secureTextEntry?: boolean;
         style?: StyleProp<TextStyle>;
@@ -20,6 +29,7 @@ export const ThemedInput = (
                 ? props.placeholderTextColor
                 : theme === "dark" ? Colors.dark.color : Colors.light.color}
             onChangeText={props.onChangeText}
+            onSubmitEditing={props.onSubmitEditing}
             value={props.value}
             secureTextEntry={props.secureTextEntry}
             style={[styles.input, theme === "dark" ? styles.dark : styles.light, props.style]}
