@@ -19,7 +19,7 @@ const SepiaSearch = (navigation: any) => {
     const theme = useTheme();
     const [videos, setVideos] = useState<SepiaSearchVideo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [watch, setWatch] = useState<string>("");
+    const [video, setVideo] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
@@ -70,17 +70,17 @@ const SepiaSearch = (navigation: any) => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {watch &&
+            {video &&
                 <ScrollView
                     style={{marginTop: 20 }}>
                     <Button
                         title="Back"
-                        onPress={() => {setWatch("")}}
+                        onPress={() => {setVideo("")}}
                     />
-                    <VideoPlayer embedPath={watch} />
+                    <VideoPlayer videoUrl={video} />
                 </ScrollView>
             }
-            {!watch && !error &&
+            {!video && !error &&
                 <>
                     <Header setSearch={setSearch} />
                     <ContentCategories
@@ -103,7 +103,7 @@ const SepiaSearch = (navigation: any) => {
                                             publishedAt={item.publishedAt}
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
-                                            onPress={() => setWatch(item.embedUrl)}
+                                            onPress={() => setVideo(`https://${item.channel.host}/api/v1/videos/${item.uuid}`)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}
                                         />

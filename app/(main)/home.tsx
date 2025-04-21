@@ -13,7 +13,7 @@ import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
-import {Video} from "@/types/Video";
+import {VideoListEntry} from "@/types/VideoListEntry";
 import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useSelector} from "react-redux";
@@ -25,9 +25,9 @@ import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 
 const HomeScreen = () => {
     const theme = useTheme();
-    const [videos, setVideos] = useState<Video[]>([]);
+    const [videos, setVideos] = useState<VideoListEntry[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [watch, setWatch] = useState<string>("");
+    const [currentVideo, setCurrentVideo] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -74,17 +74,17 @@ const HomeScreen = () => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {watch &&
+            {currentVideo &&
                 <ScrollView
                 style={{marginTop: 20 }}>
                     <Button
                         title="Back"
-                        onPress={() => {setWatch("")}}
+                        onPress={() => {setCurrentVideo("")}}
                     />
-                    <VideoPlayer embedPath={watch} />
+                    <VideoPlayer videoUrl={currentVideo} />
                 </ScrollView>
             }
-            {!watch && !error &&
+            {!currentVideo && !error &&
                 <>
                     <Header setSearch={setSearch} />
                     <ContentCategories
@@ -108,7 +108,7 @@ const HomeScreen = () => {
                                             publishedAt={item.publishedAt}
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
-                                            onPress={() => setWatch(`${currentInstance}${item.embedPath}`)}
+                                            onPress={() => setCurrentVideo(`${currentInstance}/api/v1/videos/${item.uuid}`)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}
                                         />
