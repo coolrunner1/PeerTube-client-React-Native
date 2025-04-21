@@ -5,6 +5,8 @@ import {useVideoPlayer, VideoView} from "expo-video";
 import {useEvent} from "expo";
 import {useEffect, useState} from "react";
 import {Video} from "@/types/Video";
+import {useSelector} from "react-redux";
+import {RootState} from "@/state/store";
 
 export const VideoPlayer = (
     props: {
@@ -13,6 +15,11 @@ export const VideoPlayer = (
 ) => {
     const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
+    const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
+
+    useEffect(() => {
+        console.log(preferredPlayer);
+    }, [preferredPlayer]);
 
     useEffect(() => {
         fetch(props.videoUrl)
@@ -57,16 +64,14 @@ export const VideoPlayer = (
                 <ScrollView
                     style={styles.videoPlayerContainer}
                 >
-                    {video.isLive &&
+                    {video.isLive || preferredPlayer === "Web" ?
                         <WebView
+                            allowsFullscreenVideo={true}
                             source={{
                                 uri: `https://${video.channel.host}${video.embedPath}`
                             }}
                             style={{ marginTop: 20, minWidth: 100, minHeight: 300 }}
-                        />
-                    }
-
-                    {!video.isLive &&
+                        /> :
                         <>
                             <VideoView style={styles.video} player={player} allowsFullscreen allowsPictureInPicture />
                             <View style={styles.controlsContainer}>

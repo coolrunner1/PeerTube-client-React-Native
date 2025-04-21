@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setCurrentInstance} from "@/slices/instancesSlice";
 import {useDispatch} from "react-redux";
+import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
 
 
 export default function HomeLayout() {
@@ -19,6 +20,9 @@ export default function HomeLayout() {
         AsyncStorage.getItem("instance")
             .then((instance) =>
                 instance ? dispatch(setCurrentInstance(instance)) : dispatch(setCurrentInstance("https://tilvids.com")));
+        AsyncStorage.getItem("preferredPlayer")
+            .then((preferredPlayer) =>
+                preferredPlayer && dispatch(setPreferredPlayer(preferredPlayer)));
     }, []);
 
     return (

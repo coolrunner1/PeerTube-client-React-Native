@@ -1,12 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import filtersSlice from "@/slices/filtersSlice";
-import instancesSlice, {setCurrentInstance} from "@/slices/instancesSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import instancesSlice from "@/slices/instancesSlice";
+import userPreferencesSlice from "@/slices/userPreferencesSlice";
 
 export const store = configureStore({
     reducer: {
         filters: filtersSlice,
-        instances: instancesSlice
+        instances: instancesSlice,
+        userPreferences: userPreferencesSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

@@ -1,5 +1,6 @@
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Alert, View, StyleSheet} from "react-native";
+import SelectDropdown from 'react-native-select-dropdown'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,13 +10,17 @@ import {useState} from "react";
 import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/Global/ThemedButton";
+import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
 
 const Options = ({navigation}: {navigation: any}) => {
 
     const dispatch = useDispatch();
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
+    const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
     const [instance, setInstance] = useState<string>(currentInstance);
     const theme = useTheme();
+
+    const playerOptions = ["Native", "Web"];
 
     const logOut = async () => {
         const login = await AsyncStorage.getItem("login");
@@ -73,6 +78,34 @@ const Options = ({navigation}: {navigation: any}) => {
                 />
                 <ThemedButton title="Set instance" onPress={setGlobalInstance} style={{backgroundColor: Colors.emphasised.backgroundColor}}/>
             </View>
+            <View style={[styles.sectionContainer]}>
+                <ThemedText style={styles.text}>Preferred video player</ThemedText>
+                <SelectDropdown
+                    data={playerOptions}
+                    onSelect={(player) => dispatch(setPreferredPlayer(player))}
+                    defaultValue={preferredPlayer}
+                    renderButton={(selectedItem, isOpened) => {
+                        return (
+                            <View
+                                style={[
+                                    styles.button,
+                                    {backgroundColor: Colors.emphasised.backgroundColor,}
+                                ]}
+                            >
+                                <ThemedText style={[styles.buttonText]} inverseColor={true}>{(selectedItem && selectedItem) || 'Select preferred player'}</ThemedText>
+                            </View>
+                        );
+                    }}
+                    renderItem={(item, index, isSelected) => {
+                        return (
+                            <View style={[styles.button, {borderRadius: 0, ...(isSelected && {backgroundColor: Colors.emphasised.backgroundColor})}]}>
+                                <ThemedText style={[styles.buttonText, {color: Colors.light.color}]}>{item}</ThemedText>
+                            </View>
+                        );
+                    }}
+
+                />
+            </View>
             <View style={styles.sectionContainer}>
                 <ThemedText style={styles.text}>Account</ThemedText>
                 <ThemedButton title="Log out" onPress={logOut} />
@@ -103,7 +136,17 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         marginBottom: 20
-    }
+    },
+    button: {
+        padding: 10,
+        borderRadius: 10,
+        width: 300
+    },
+    buttonText: {
+        fontWeight: "bold",
+        fontSize: 18,
+        textAlign: "center",
+    },
 })
 
 export default Options;
