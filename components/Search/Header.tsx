@@ -1,4 +1,4 @@
-import {NativeSyntheticEvent, StyleSheet, TextInputKeyPressEventData, View} from "react-native";
+import {NativeSyntheticEvent, StyleSheet, TextInputKeyPressEventData, View, Text} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -26,7 +26,7 @@ export const Header = (
                 </> :
                 <>
                     <View style={{padding: 10}}></View>
-                    <ThemedText style={{fontWeight: "bold", fontSize: 20}}>{props.title}</ThemedText>
+                    <Text style={styles.title}>{props.title}</Text>
                     <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"} onPress={() => setShowSearch(true)} />
                 </>
                 }
@@ -47,5 +47,10 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         marginHorizontal: 10,
+    },
+    title: {
+        fontWeight: "bold",
+        fontSize: 20,
+        color: Colors.dark.color
     }
 });
