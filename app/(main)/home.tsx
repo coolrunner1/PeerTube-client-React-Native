@@ -84,7 +84,7 @@ const HomeScreen = () => {
             }
             {!currentVideo && !error &&
                 <>
-                    <Header setSearch={setSearch} title={"Trending"}/>
+                    <Header setSearch={setSearch} search={search} title={"Trending"}/>
                     <ContentCategories
                         onFiltersMenuButtonPress={() => setShowFilters(true)}
                     />

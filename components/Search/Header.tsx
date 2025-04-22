@@ -2,17 +2,25 @@ import {NativeSyntheticEvent, StyleSheet, TextInputKeyPressEventData, View, Text
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 
 export const Header = (
     props: {
         title: string;
+        search?: string;
         setSearch: (value: string) => void;
     }
 ) => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
+
+    useEffect(() => {
+        if (props.search) {
+            setSearch(props.search);
+            setShowSearch(true);
+        }
+    }, [])
 
     return (
         <View style={styles.header}>
