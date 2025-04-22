@@ -33,10 +33,10 @@ export const VideoPlayer = (
         if (!video) {
             return;
         }
-        if (video.isLive) {
+        if (video.isLive || preferredPlayer === "Web") {
             return;
         }
-        if (Platform.OS !== "web") {
+        if (Platform.OS !== "web" && typeof(video.streamingPlaylists[0]) !== "undefined") {
             setVideoSource(video.streamingPlaylists[0].playlistUrl);
             return;
         }
