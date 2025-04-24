@@ -1,6 +1,7 @@
-import {StyleSheet, View, Image, Pressable} from "react-native";
+import {StyleSheet, View, Pressable, ImageBackground} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
+import {useTheme} from "@react-navigation/core";
 
 
 export const VideoEntry = (
@@ -10,11 +11,35 @@ export const VideoEntry = (
         publishedAt: string,
         views: number,
         channelDisplayName: string,
+        duration: number,
         isLive?: boolean,
         nsfw?: boolean,
         onPress?: () => void,
     }
 ) => {
+
+    const theme = useTheme();
+
+    const backgroundColor = theme.dark ? Colors.darkTransparent.backgroundColor : Colors.lightTransparent.backgroundColor;
+
+    const formatDuration = (seconds: number) => {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+
+        if (!hrs) {
+            return [
+                mins.toString().padStart(2, '0'),
+                secs.toString().padStart(2, '0')
+            ].join(':');
+        }
+
+        return [
+            hrs.toString().padStart(2, '0'),
+            mins.toString().padStart(2, '0'),
+            secs.toString().padStart(2, '0')
+        ].join(':');
+    }
 
     return (
         <Pressable
@@ -22,19 +47,23 @@ export const VideoEntry = (
             style={styles.entryContainer}
             >
 
-            <Image
+            <ImageBackground
                 style={styles.image}
                 source={ !props.nsfw
                     ? { uri: props.thumbnail }
                     : require('@/assets/images/nsfw.png')
                 }
-            />
-            <View style={{flexShrink: 1}}>
-                {props.isLive &&
-                    <View style={styles.live}>
+            >
+                {props.isLive ?
+                    <View style={[styles.videoDuration, styles.live]}>
                         <ThemedText style={{fontWeight: "bold"}}>Live</ThemedText>
+                    </View> :
+                    <View style={[styles.videoDuration, {backgroundColor: backgroundColor}]}>
+                        <ThemedText style={{fontWeight: "bold"}}>{(formatDuration(props.duration))}</ThemedText>
                     </View>
                 }
+            </ImageBackground>
+            <View style={{flexShrink: 1}}>
                 <ThemedText style={styles.title}>{props.title.substring(0, 60)+(props.title.length > 60 ? "..." : "")}</ThemedText>
                 <ThemedText>{props.channelDisplayName.substring(0, 25)+(props.channelDisplayName.length > 25 ? "..." : "")}</ThemedText>
                 <ThemedText>{new Date(props.publishedAt).toDateString().slice(4)} &#x2022; {props.views} views</ThemedText>
@@ -59,14 +88,19 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 2
     },
-    live: {
+    videoDuration: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: Colors.emphasised.backgroundColor,
         borderRadius: 10,
-        paddingVertical: 2,
         paddingHorizontal: 5,
-        marginRight: 2,
-        maxWidth: 40
+        marginLeft: "auto",
+        marginTop: "auto",
+        marginRight: 3,
+        marginBottom: 3,
+        maxHeight: 20
+    },
+    live: {
+        backgroundColor: Colors.emphasised.backgroundColor,
+        maxWidth: 40,
     }
 })

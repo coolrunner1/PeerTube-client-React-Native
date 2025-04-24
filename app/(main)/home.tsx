@@ -106,6 +106,7 @@ const HomeScreen = () => {
                                             publishedAt={item.publishedAt}
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
+                                            duration={item.duration}
                                             onPress={() => setCurrentVideo(`${currentInstance}/api/v1/videos/${item.uuid}`)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}

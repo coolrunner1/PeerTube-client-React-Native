@@ -1,8 +1,7 @@
 import WebView from "react-native-webview";
-import {Alert, Button, Platform, ScrollView, StyleSheet, View,} from 'react-native';
+import {Alert, Platform, ScrollView, StyleSheet,} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
-import {useEvent} from "expo";
 import {useEffect, useState} from "react";
 import {Video} from "@/types/Video";
 import {useSelector} from "react-redux";
@@ -18,14 +17,10 @@ export const VideoPlayer = (
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
 
     useEffect(() => {
-        console.log(preferredPlayer);
-    }, [preferredPlayer]);
-
-    useEffect(() => {
         fetch(props.videoUrl)
-            .then(data => data.json())
+            .then(data => {console.log(data); return data.json()})
             .then(json => setVideo(json))
-            .catch(err => Alert.alert("error", err));
+            .catch(err => Alert.alert("error", err.toString()));
     }, [props.videoUrl]);
 
     useEffect(() => {

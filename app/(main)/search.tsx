@@ -27,7 +27,7 @@ const SepiaSearch = (navigation: any) => {
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://sepiasearch.org/api/v1/search/videos?${search ? `search=${search}&` : ""}start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}&blockedHosts[]=${blockedInstances.current}&blockedAccounts=equiphile`)
+        await fetch(`https://sepiasearch.org/api/v1/search/videos?${search ? `search=${search}&` : ""}start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}&blockedHosts[]=${blockedInstances.current}`)
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
@@ -101,6 +101,7 @@ const SepiaSearch = (navigation: any) => {
                                             publishedAt={item.publishedAt}
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
+                                            duration={item.duration}
                                             onPress={() => setVideo(`https://${item.channel.host}/api/v1/videos/${item.uuid}`)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}

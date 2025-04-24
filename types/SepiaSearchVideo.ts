@@ -14,6 +14,7 @@ export type SepiaSearchVideo = {
     embedPath: string;
     embedUrl: string;
     channel: Channel;
+    duration: number;
     isLive: boolean;
     nsfw: boolean;
 }

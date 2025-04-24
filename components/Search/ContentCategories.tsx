@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {ActivityIndicator, ScrollView, StyleSheet} from "react-native";
-import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useDispatch, useSelector} from "react-redux";
