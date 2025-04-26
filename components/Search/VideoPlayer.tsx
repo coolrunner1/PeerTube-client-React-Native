@@ -6,12 +6,14 @@ import {useEffect, useState} from "react";
 import {Video} from "@/types/Video";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
+import {useKeepAwake} from "expo-keep-awake";
 
 export const VideoPlayer = (
     props: {
         videoUrl: string,
     }
 ) => {
+    useKeepAwake();
     const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);

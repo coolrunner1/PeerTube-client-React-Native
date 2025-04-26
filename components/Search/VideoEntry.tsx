@@ -1,4 +1,4 @@
-import {StyleSheet, View, Pressable, ImageBackground} from "react-native";
+import {StyleSheet, View, Pressable, ImageBackground, Alert} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
@@ -44,6 +44,7 @@ export const VideoEntry = (
     return (
         <Pressable
             onPress={props.onPress}
+            onLongPress={() => {Alert.alert('Test', props.title)}}
             style={styles.entryContainer}
             >
 
