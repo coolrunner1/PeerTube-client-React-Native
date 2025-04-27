@@ -2,7 +2,6 @@ import {
     StyleSheet,
     ActivityIndicator,
     Animated,
-    Button,
     View,
     FlatList, RefreshControl,
 } from "react-native";
@@ -55,6 +54,8 @@ const HomeScreen = () => {
         await loadVideos(true);
     };
 
+    const closeVideo = () => setCurrentVideo("");
+
     useEffect(() => {
         if (!currentInstance) return;
         if (error) setError("");
@@ -75,11 +76,7 @@ const HomeScreen = () => {
             {currentVideo &&
                 <ScrollView
                 style={{marginTop: 20 }}>
-                    <Button
-                        title="Back"
-                        onPress={() => {setCurrentVideo("")}}
-                    />
-                    <VideoPlayer videoUrl={currentVideo} />
+                    <VideoPlayer videoUrl={currentVideo} closeVideo={closeVideo} />
                 </ScrollView>
             }
             {!currentVideo && !error &&

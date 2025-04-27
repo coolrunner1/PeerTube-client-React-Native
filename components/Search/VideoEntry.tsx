@@ -2,6 +2,8 @@ import {StyleSheet, View, Pressable, ImageBackground, Alert} from "react-native"
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
+import formatDuration from "@/utils/formatDuration"
+import formatPublishedDate from "@/utils/formatPublishedDate";
 
 
 export const VideoEntry = (
@@ -21,25 +23,6 @@ export const VideoEntry = (
     const theme = useTheme();
 
     const backgroundColor = theme.dark ? Colors.darkTransparent.backgroundColor : Colors.lightTransparent.backgroundColor;
-
-    const formatDuration = (seconds: number) => {
-        const hrs = Math.floor(seconds / 3600);
-        const mins = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-
-        if (!hrs) {
-            return [
-                mins.toString().padStart(2, '0'),
-                secs.toString().padStart(2, '0')
-            ].join(':');
-        }
-
-        return [
-            hrs.toString().padStart(2, '0'),
-            mins.toString().padStart(2, '0'),
-            secs.toString().padStart(2, '0')
-        ].join(':');
-    }
 
     return (
         <Pressable
@@ -67,7 +50,7 @@ export const VideoEntry = (
             <View style={{flexShrink: 1}}>
                 <ThemedText style={styles.title}>{props.title.substring(0, 60)+(props.title.length > 60 ? "..." : "")}</ThemedText>
                 <ThemedText>{props.channelDisplayName.substring(0, 25)+(props.channelDisplayName.length > 25 ? "..." : "")}</ThemedText>
-                <ThemedText>{new Date(props.publishedAt).toDateString().slice(4)} &#x2022; {props.views} views</ThemedText>
+                <ThemedText>{formatPublishedDate(props.publishedAt)} &#x2022; {props.views} views</ThemedText>
             </View>
         </Pressable>
     );

@@ -1,5 +1,5 @@
 import WebView from "react-native-webview";
-import {Alert, Platform, ScrollView, StyleSheet,} from 'react-native';
+import {Alert, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import {useEffect, useState} from "react";
@@ -7,16 +7,26 @@ import {Video} from "@/types/Video";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useKeepAwake} from "expo-keep-awake";
+import formatPublishedDate from "@/utils/formatPublishedDate";
+import {useTheme} from "@react-navigation/core";
+import {Colors} from "@/constants/Colors";
+import {FontAwesome6} from "@expo/vector-icons";
 
 export const VideoPlayer = (
     props: {
         videoUrl: string,
+        closeVideo: () => void,
     }
 ) => {
     useKeepAwake();
+    const theme = useTheme();
+
     const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
+
+    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
+    const textColor = theme.dark ?  Colors.dark.color : Colors.light.color;
 
     useEffect(() => {
         fetch(props.videoUrl)
@@ -52,16 +62,18 @@ export const VideoPlayer = (
     return (
         <>
             {video &&
-                <ScrollView
-                    style={styles.videoPlayerContainer}
+                <View
+                    style={[styles.videoPlayerContainer, { backgroundColor: backgroundColor }]}
                 >
+                    <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={props.closeVideo} />
+                    <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
                     {video.isLive || preferredPlayer === "Web" ?
                         <WebView
                             allowsFullscreenVideo={true}
                             source={{
                                 uri: `https://${video.channel.host}${video.embedPath}`
                             }}
-                            style={{ marginTop: 20, minWidth: 100, minHeight: 300 }}
+                            style={video}
                         /> :
                         <VideoView
                             style={styles.video}
@@ -71,8 +83,19 @@ export const VideoPlayer = (
                             startsPictureInPictureAutomatically
                         />
                     }
-                    <ThemedText>Work in progress</ThemedText>
-                </ScrollView>
+                    <ScrollView>
+                        <ThemedText>Work in progress</ThemedText>
+                        <ThemedText>Published at: {formatPublishedDate(video.publishedAt)}</ThemedText>
+                        <ThemedText>Title: {video.name}</ThemedText>
+                        <ThemedText>Description: {video.truncatedDescription}</ThemedText>
+                        <ThemedText>Views: {video.views}</ThemedText>
+                        <ThemedText>Likes: {video.likes}</ThemedText>
+                        <ThemedText>Dislikes: {video.dislikes}</ThemedText>
+                        <ThemedText>Tags:</ThemedText>
+                        {video.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
+                        {video.language.label !== "Unknown" && <ThemedText>Language: {video.language.label}</ThemedText>}
+                    </ScrollView>
+                </View>
             }
         </>
     );
@@ -81,10 +104,11 @@ export const VideoPlayer = (
 const styles = StyleSheet.create({
     videoPlayerContainer: {
         flex: 1,
+        height: "100%",
     },
     video: {
-        width: 350,
-        height: 275,
+        width: "100%",
+        height: "70%",
     },
     controlsContainer: {
         padding: 10,

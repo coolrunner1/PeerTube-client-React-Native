@@ -1,0 +1,1 @@
+export default (publishedAt: string) => new Date(publishedAt).toDateString().slice(4);

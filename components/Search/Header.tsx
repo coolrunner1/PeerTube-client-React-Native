@@ -20,22 +20,29 @@ export const Header = (
             setSearch(props.search);
             setShowSearch(true);
         }
-    }, [])
+    }, []);
+
+    const onCrossPress = () => {
+        setShowSearch(false);
+        props.setSearch("");
+        setSearch("")
+    }
 
     return (
         <View style={styles.header}>
             {showSearch ?
                 <>
-                    <FontAwesome6 name={"xmark"} size={25} color={"white"}
-                                  onPress={() => {setShowSearch(false); props.setSearch("")}} />
-                    <ThemedInput style={styles.searchBar} placeholder={"Search"} onChangeText={setSearch} value={search} onSubmitEditing={() => props.setSearch(search)}/>
+                    <FontAwesome6 name={"xmark"} size={25} color={"white"} onPress={onCrossPress} />
+                    <ThemedInput style={styles.searchBar} placeholder={"Search"} onChangeText={setSearch}
+                                 value={search} onSubmitEditing={() => props.setSearch(search)}/>
                     <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"}
                                   onPress={() => props.setSearch(search)}/>
                 </> :
                 <>
                     <View style={{padding: 10}}></View>
                     <Text style={styles.title}>{props.title}</Text>
-                    <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"} onPress={() => setShowSearch(true)} />
+                    <FontAwesome6 name={"magnifying-glass"} size={25} color={"white"}
+                                  onPress={() => setShowSearch(true)} />
                 </>
                 }
         </View>

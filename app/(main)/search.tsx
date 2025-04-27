@@ -1,4 +1,4 @@
-import {StyleSheet, ActivityIndicator, Animated, Button, View, RefreshControl, FlatList, Alert} from "react-native";
+import {StyleSheet, ActivityIndicator, Animated, View, RefreshControl, FlatList, Alert} from "react-native";
 import ScrollView = Animated.ScrollView;
 import React, {useEffect, useRef, useState} from "react";
 import {VideoEntry} from "@/components/Search/VideoEntry";
@@ -17,7 +17,7 @@ const SepiaSearch = (navigation: any) => {
     const theme = useTheme();
     const [videos, setVideos] = useState<SepiaSearchVideo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [video, setVideo] = useState<string>("");
+    const [currentVideo, setCurrentVideo] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
@@ -48,6 +48,8 @@ const SepiaSearch = (navigation: any) => {
         await loadVideos(true);
     };
 
+    const closeVideo = () => setCurrentVideo("");
+
     useEffect(() => {
         setLoading(true);
         loadVideos(true);
@@ -68,17 +70,13 @@ const SepiaSearch = (navigation: any) => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {video &&
+            {currentVideo &&
                 <ScrollView
                     style={{marginTop: 20 }}>
-                    <Button
-                        title="Back"
-                        onPress={() => {setVideo("")}}
-                    />
-                    <VideoPlayer videoUrl={video} />
+                    <VideoPlayer videoUrl={currentVideo} closeVideo={closeVideo} />
                 </ScrollView>
             }
-            {!video && !error &&
+            {!currentVideo && !error &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Sepia Search"} />
                     <ContentCategories
@@ -102,7 +100,7 @@ const SepiaSearch = (navigation: any) => {
                                             views={item.views}
                                             channelDisplayName={item.channel.displayName}
                                             duration={item.duration}
-                                            onPress={() => setVideo(`https://${item.channel.host}/api/v1/videos/${item.uuid}`)}
+                                            onPress={() => setCurrentVideo(`https://${item.channel.host}/api/v1/videos/${item.uuid}`)}
                                             isLive={item.isLive}
                                             nsfw={item.nsfw}
                                         />
