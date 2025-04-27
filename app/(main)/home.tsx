@@ -3,11 +3,9 @@ import {
     ActivityIndicator,
     Animated,
     View,
-    FlatList, RefreshControl,
 } from "react-native";
 import ScrollView = Animated.ScrollView;
 import React, {useEffect, useState} from "react";
-import {VideoEntry} from "@/components/Search/VideoEntry";
 import {VideoPlayer} from "@/components/Search/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
@@ -18,6 +16,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
+import {VideosList} from "@/components/Search/VideosList";
 
 const HomeScreen = () => {
     const theme = useTheme();
@@ -92,43 +91,15 @@ const HomeScreen = () => {
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
                         {loading
                             ? <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
-                            : <View style={styles.flatListContainer}>
-                                <FlatList
-                                    data={videos}
-                                    keyExtractor={(item) => item.uuid}
-                                    renderItem={({ item }) => (
-                                        <VideoEntry
-                                            title={item.name}
-                                            thumbnail={`${currentInstance}${item.thumbnailPath}`}
-                                            publishedAt={item.publishedAt}
-                                            views={item.views}
-                                            channelDisplayName={item.channel.displayName}
-                                            duration={item.duration}
-                                            onPress={() => setCurrentVideo(`${currentInstance}/api/v1/videos/${item.uuid}`)}
-                                            isLive={item.isLive}
-                                            nsfw={item.nsfw}
-                                        />
-                                    )}
-                                    ItemSeparatorComponent={() => <View style={{height: 10}} />}
-                                    refreshControl={
-                                        <RefreshControl
-                                            refreshing={loading}
-                                            onRefresh={onRefresh}
-                                            colors={[Colors.emphasised.color]}
-                                            tintColor={Colors.emphasised.color}
-                                        />
-                                    }
-                                    style={{flex:1}}
-                                    onScroll={(e)=>{
-                                        let paddingToBottom = 10;
-                                        paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-                                        if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-                                            setEndOfScreen(true);
-                                        }
-                                    }}
-                                    ListFooterComponent={endOfScreen ? <ActivityIndicator color={Colors.emphasised.backgroundColor}/> : <></>}
-                                />
-                            </View>
+                            : <VideosList
+                                videos={videos}
+                                currentInstance={currentInstance}
+                                onRefresh={onRefresh}
+                                setCurrentVideo={setCurrentVideo}
+                                loading={loading}
+                                endOfScreen={endOfScreen}
+                                setEndOfScreen={setEndOfScreen}
+                            />
                         }
                     </View>
                 </>
@@ -142,14 +113,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-    },
-    flatListContainer: {
-        flex: 1,
-        marginHorizontal: "auto",
-        marginTop: 5,
-        paddingHorizontal: 10,
-        gap: 15,
-        maxWidth: 900,
     },
 });
 
