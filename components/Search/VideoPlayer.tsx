@@ -1,8 +1,8 @@
 import WebView from "react-native-webview";
-import {Alert, Platform, ScrollView, StyleSheet, View,} from 'react-native';
+import {ActivityIndicator, Alert, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Video} from "@/types/Video";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
@@ -52,7 +52,7 @@ export const VideoPlayer = (
             return;
         }
         setVideoSource(video.streamingPlaylists[0].files[0].fileUrl);
-    }, [video]);
+    }, [video, preferredPlayer]);
 
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
@@ -60,13 +60,14 @@ export const VideoPlayer = (
     });
 
     return (
-        <>
-            {video &&
-                <View
-                    style={[styles.videoPlayerContainer, { backgroundColor: backgroundColor }]}
-                >
-                    <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={props.closeVideo} />
-                    <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
+        <View
+            style={[styles.videoPlayerContainer, { backgroundColor: backgroundColor }]}
+        >
+            <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={props.closeVideo} />
+            <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
+            {!video ?
+                <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/> :
+                <>
                     {video.isLive || preferredPlayer === "Web" ?
                         <WebView
                             allowsFullscreenVideo={true}
@@ -95,9 +96,10 @@ export const VideoPlayer = (
                         {video.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
                         {video.language.label !== "Unknown" && <ThemedText>Language: {video.language.label}</ThemedText>}
                     </ScrollView>
-                </View>
+                </>
             }
-        </>
+
+        </View>
     );
 };
 
