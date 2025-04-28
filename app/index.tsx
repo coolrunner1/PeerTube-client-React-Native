@@ -17,7 +17,7 @@ export default function Index({navigation}: {navigation: any}) {
 
     return (
         <ImageBackground
-            source={require("@/assets/images/main-page-bg-dark.jpg")}
+            source={require("@/assets/images/main-page-bg.jpg")}
             resizeMode="cover"
             style={{
                 flex: 1,
