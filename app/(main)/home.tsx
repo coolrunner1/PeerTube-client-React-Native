@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import ScrollView = Animated.ScrollView;
 import React, {useEffect, useState} from "react";
-import {VideoPlayer} from "@/components/Search/VideoPlayer";
+import {VideoPlayer} from "@/components/Video/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {VideoListEntry} from "@/types/VideoListEntry";
@@ -16,7 +16,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
-import {VideosList} from "@/components/Search/VideosList";
+import {VideosList} from "@/components/Video/VideosList";
 import {getVideos} from "@/api/videos";
 
 const HomeScreen = () => {

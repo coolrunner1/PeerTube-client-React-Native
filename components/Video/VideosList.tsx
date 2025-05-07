@@ -1,5 +1,5 @@
 import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, View} from "react-native";
-import {VideoEntry} from "@/components/Search/VideoEntry";
+import {VideoEntry} from "@/components/Video/VideoEntry";
 import {Colors} from "@/constants/Colors";
 import {VideoListEntry} from "@/types/VideoListEntry";
 

@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         minHeight: 80
     },
     minimizedVideoTitleContainer: {
-        maxWidth: Dimensions.get("window").width - 190,
+        maxWidth: Dimensions.get("window").width - 200,
         marginLeft: 6,
     },
     minimizedVideoTitle: {

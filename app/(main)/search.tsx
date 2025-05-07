@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import ScrollView = Animated.ScrollView;
 import React, {useEffect, useRef, useState} from "react";
-import {VideoPlayer} from "@/components/Search/VideoPlayer";
+import {VideoPlayer} from "@/components/Video/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {Header} from "@/components/Search/Header";
@@ -17,7 +17,7 @@ import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {BlockedInstances} from "@/constants/BlockedInstances";
 import {VideoListEntry} from "@/types/VideoListEntry";
-import {VideosList} from "@/components/Search/VideosList";
+import {VideosList} from "@/components/Video/VideosList";
 
 const SepiaSearch = () => {
     const theme = useTheme();
