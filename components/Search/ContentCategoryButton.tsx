@@ -10,20 +10,40 @@ export const ContentCategoryButton = (
     props: {
         id: number;
         title: string;
+        sepiaSearch?: boolean;
         onPress: () => void;
     }
 ) => {
     const theme = useTheme();
     const selectedCategory = useSelector((state: RootState)=> state.filters.selectedCategory);
+    const selectedSepiaCategory = useSelector((state: RootState)=> state.filters.selectedSepiaCategory);
     const [selected, setSelected] = useState<boolean>(false);
 
     useEffect(() => {
+        if (props.sepiaSearch) {
+            return;
+        }
         if (selectedCategory === props.id) {
             setSelected(true);
             return;
         }
         setSelected(false);
     }, [selectedCategory]);
+
+    useEffect(() => {
+        if (!props.sepiaSearch) {
+            return;
+        }
+        if (selectedSepiaCategory === props.id) {
+            setSelected(true);
+            return;
+        }
+        setSelected(false);
+    }, [selectedSepiaCategory]);
+
+    useEffect(() => {
+        console.log("render "+selected+' '+props.id);
+    });
 
     return (
         <Pressable

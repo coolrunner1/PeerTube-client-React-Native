@@ -1,5 +1,5 @@
 import WebView from "react-native-webview";
-import {ActivityIndicator, Alert, Platform, ScrollView, StyleSheet, View,} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import React, {useEffect, useState} from "react";
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     video: {
         width: "100%",
-        height: "50%",
+        height: Dimensions.get("window").height / 3.5,
     },
     controlsContainer: {
         padding: 10,

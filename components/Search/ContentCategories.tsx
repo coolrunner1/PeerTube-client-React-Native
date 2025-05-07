@@ -3,7 +3,7 @@ import {ActivityIndicator, ScrollView, StyleSheet} from "react-native";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectedCategory} from "@/slices/filtersSlice";
+import {setSelectedCategory, setSelectedSepiaCategory} from "@/slices/filtersSlice";
 import {ContentCategoryButton} from "@/components/Search/ContentCategoryButton";
 import {RootState} from "@/state/store";
 import {IconButton} from "@/components/Global/IconButton";
@@ -50,7 +50,13 @@ export const ContentCategories = (
                             key={key}
                             id={key}
                             title={category}
-                            onPress={() => {dispatch(setSelectedCategory(key))}}
+                            sepiaSearch={props.sepiaSearch}
+                            onPress={() => {
+                                props.sepiaSearch
+                                    ? dispatch(setSelectedSepiaCategory(key))
+                                    : dispatch(setSelectedCategory(key))
+                            }
+                            }
                         />)
                     }
                 </>

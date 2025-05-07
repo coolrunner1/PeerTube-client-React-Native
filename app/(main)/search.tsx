@@ -27,7 +27,7 @@ const SepiaSearch = () => {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
-    const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
+    const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
     const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;

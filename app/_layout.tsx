@@ -10,23 +10,27 @@ import HomeLayout from "@/app/(main)/_layout";
 import {useState} from "react";
 import {store} from "@/state/store";
 import {Provider} from "react-redux";
+import {QueryClient} from "@tanstack/query-core";
+import {QueryClientProvider} from "@tanstack/react-query";
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
     const Stack = createNativeStackNavigator();
-    const [authenticated, setAuthenticated] = useState(false);
+    const queryClient = new QueryClient();
 
     return (
-        <Provider store={store}>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <Stack.Navigator>
-                    <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
-                    <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="registration" component={Registration} options={{ headerShown: false}} />
-                    <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false, orientation: "all" }} />
-                </Stack.Navigator>
-                <StatusBar style="auto" />
-            </ThemeProvider>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                    <Stack.Navigator>
+                        <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
+                        <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
+                        <Stack.Screen name="registration" component={Registration} options={{ headerShown: false}} />
+                        <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false, orientation: "all" }} />
+                    </Stack.Navigator>
+                    <StatusBar style="auto" />
+                </ThemeProvider>
+            </Provider>
+        </QueryClientProvider>
     );
 }
