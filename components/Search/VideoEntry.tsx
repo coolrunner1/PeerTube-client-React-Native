@@ -4,6 +4,8 @@ import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
 import formatDuration from "@/utils/formatDuration"
 import formatPublishedDate from "@/utils/formatPublishedDate";
+import shortenVideoTitle from "@/utils/shortenVideoTitle";
+import shortenChannelTitle from "@/utils/shortenChannelTitle";
 
 
 export const VideoEntry = (
@@ -48,8 +50,8 @@ export const VideoEntry = (
                 }
             </ImageBackground>
             <View style={{flexShrink: 1}}>
-                <ThemedText style={styles.title}>{props.title.substring(0, 60)+(props.title.length > 60 ? "..." : "")}</ThemedText>
-                <ThemedText>{props.channelDisplayName.substring(0, 25)+(props.channelDisplayName.length > 25 ? "..." : "")}</ThemedText>
+                <ThemedText style={styles.title}>{shortenVideoTitle(props.title)}</ThemedText>
+                <ThemedText>{shortenChannelTitle(props.channelDisplayName)}</ThemedText>
                 <ThemedText>{formatPublishedDate(props.publishedAt)} &#x2022; {props.views} views</ThemedText>
             </View>
         </Pressable>

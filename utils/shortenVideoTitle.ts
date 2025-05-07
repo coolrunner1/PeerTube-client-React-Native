@@ -1,0 +1,1 @@
+export default (title: string) => title.substring(0, 60)+(title.length > 60 ? "..." : "");

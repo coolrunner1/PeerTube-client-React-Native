@@ -27,6 +27,7 @@ const SepiaSearch = () => {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
+    const [minimized, setMinimized] = useState<boolean>(false);
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
     const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
@@ -41,7 +42,6 @@ const SepiaSearch = () => {
             })
             .catch((err) => {console.error(err); setError(err.toString())});
         setEndOfScreen(false);
-        console.log(videos);
     };
 
     const onRefresh = async () => {
@@ -76,13 +76,7 @@ const SepiaSearch = () => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {currentVideo &&
-                <ScrollView
-                    style={{marginTop: 20 }}>
-                    <VideoPlayer videoUrl={currentVideo} closeVideo={closeVideo} />
-                </ScrollView>
-            }
-            {!currentVideo && !error &&
+            {(!currentVideo || minimized) && !error &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Sepia Search"} />
                     <ContentCategories
@@ -105,6 +99,17 @@ const SepiaSearch = () => {
                         }
                     </View>
                 </>
+            }
+            {currentVideo &&
+                <ScrollView
+                    style={minimized && {maxHeight: 80}}>
+                    <VideoPlayer
+                        videoUrl={currentVideo}
+                        closeVideo={closeVideo}
+                        minimized={minimized}
+                        setMinimized={setMinimized}
+                    />
+                </ScrollView>
             }
         </>
     );

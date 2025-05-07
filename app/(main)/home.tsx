@@ -27,6 +27,7 @@ const HomeScreen = () => {
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [showFilters, setShowFilters] = useState<boolean>(false);
+    const [minimized, setMinimized] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
@@ -35,7 +36,7 @@ const HomeScreen = () => {
 
     const loadVideos = async (clearVideos: boolean) => {
         //getVideos()
-        const controller = new AbortController(); // Create a new instance for the new request
+        const controller = new AbortController();
         const signal = controller.signal;
 
         setTimeout(() => {
@@ -81,13 +82,7 @@ const HomeScreen = () => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {currentVideo &&
-                <ScrollView
-                style={{marginTop: 20 }}>
-                    <VideoPlayer videoUrl={currentVideo} closeVideo={closeVideo} />
-                </ScrollView>
-            }
-            {!currentVideo && !error &&
+            {(!currentVideo || minimized) && !error &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Trending"}/>
                     <ContentCategories
@@ -112,6 +107,17 @@ const HomeScreen = () => {
                         }
                     </View>
                 </>
+            }
+            {currentVideo &&
+                <ScrollView
+                    style={minimized && { maxHeight: 80 }}>
+                    <VideoPlayer
+                        videoUrl={currentVideo}
+                        closeVideo={closeVideo}
+                        minimized={minimized}
+                        setMinimized={setMinimized}
+                    />
+                </ScrollView>
             }
         </>
     );

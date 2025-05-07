@@ -41,10 +41,6 @@ export const ContentCategoryButton = (
         setSelected(false);
     }, [selectedSepiaCategory]);
 
-    useEffect(() => {
-        console.log("render "+selected+' '+props.id);
-    });
-
     return (
         <Pressable
             style={[
