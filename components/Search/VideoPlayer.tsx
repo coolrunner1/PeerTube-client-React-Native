@@ -40,7 +40,7 @@ export const VideoPlayer = (
         if (!video) {
             return;
         }
-        if (video.isLive || preferredPlayer === "Web") {
+        if (preferredPlayer === "Web") {
             return;
         }
         if (Platform.OS !== "web" && typeof(video.streamingPlaylists[0]) !== "undefined") {
@@ -68,7 +68,7 @@ export const VideoPlayer = (
             {!video ?
                 <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/> :
                 <>
-                    {video.isLive || preferredPlayer === "Web" ?
+                    {preferredPlayer === "Web" ?
                         <WebView
                             allowsFullscreenVideo={true}
                             source={{
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     video: {
         width: "100%",
-        height: "70%",
+        height: "50%",
     },
     controlsContainer: {
         padding: 10,

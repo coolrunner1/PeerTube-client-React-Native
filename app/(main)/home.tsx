@@ -17,6 +17,7 @@ import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 import {VideosList} from "@/components/Search/VideosList";
+import {getVideos} from "@/api/videos";
 
 const HomeScreen = () => {
     const theme = useTheme();
@@ -33,7 +34,15 @@ const HomeScreen = () => {
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`)
+        //getVideos()
+        const controller = new AbortController(); // Create a new instance for the new request
+        const signal = controller.signal;
+
+        setTimeout(() => {
+            controller.abort();
+        }, 5000);
+
+        await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`, {signal})
             .then((res) => res.json())
             .then((json) => {
                 setVideos(clearVideos ? json.data : [...videos, ...json.data]);
