@@ -109,15 +109,12 @@ const HomeScreen = () => {
                 </>
             }
             {currentVideo &&
-                <ScrollView
-                    style={minimized && { maxHeight: 80 }}>
-                    <VideoPlayer
-                        videoUrl={currentVideo}
-                        closeVideo={closeVideo}
-                        minimized={minimized}
-                        setMinimized={setMinimized}
-                    />
-                </ScrollView>
+                <VideoPlayer
+                    videoUrl={currentVideo}
+                    closeVideo={closeVideo}
+                    minimized={minimized}
+                    setMinimized={setMinimized}
+                />
             }
         </>
     );

@@ -1,5 +1,5 @@
 import WebView from "react-native-webview";
-import {ActivityIndicator, Alert, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View,} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
@@ -77,15 +77,24 @@ export const VideoPlayer = (
             {!props.minimized &&
                 <View style={styles.buttonsContainer}>
                     <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={() => props.setMinimized(true)} />
+                    {video &&
+                        <View style={styles.topVideoTitleContainer} >
+                            <Text style={styles.topVideoTitle}>{shortenVideoTitle(video.name)}</Text>
+                        </View>
+                    }
                     <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
                 </View>
             }
             {!video
-                ? <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
+                ?
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator color={Colors.emphasised.backgroundColor} style={{margin: 'auto'}} size={"large"}/>
+                    {props.minimized && <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />}
+                </View>
                 :
                 <View style={props.minimized && {flexDirection: "row"}}>
                     {preferredPlayer === "Web" ?
-                        <View style={!props.minimized ? styles.video : styles.videoWebMinimized}>
+                        <View style={!props.minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
                             <WebView
                                 allowsFullscreenVideo={true}
                                 source={{
@@ -95,7 +104,7 @@ export const VideoPlayer = (
                         </View>
                         :
                         <VideoView
-                            style={!props.minimized ? styles.video : styles.videoNativeMinimized}
+                            style={!props.minimized ? styles.video : styles.videoMinimized}
                             player={player}
                             allowsFullscreen
                             allowsPictureInPicture
@@ -117,12 +126,12 @@ export const VideoPlayer = (
                             {video.language.label !== "Unknown" && <ThemedText>Language: {video.language.label}</ThemedText>}
                         </ScrollView>
                         :
-                        <View style={styles.minimizedDetailsContainer}>
-                            <Pressable style={styles.minimizedVideoTitleContainer} onPress={() => props.setMinimized(false)}>
+                        <Pressable style={styles.minimizedDetailsContainer} onPress={() => props.setMinimized(false)}>
+                            <View style={styles.minimizedVideoTitleContainer} >
                                 <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(video.name)}</ThemedText>
-                            </Pressable>
+                            </View>
                             <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
-                        </View>
+                        </Pressable>
                     }
                 </View>
             }
@@ -134,28 +143,25 @@ const styles = StyleSheet.create({
     videoPlayerContainer: {
         flex: 1,
         height: "100%",
-        paddingTop: 25
     },
     videoPlayerContainerMinimized: {
-        maxHeight: 200,
-        minHeight: 80
+        minHeight: 70
     },
-    videoNativeMinimized: {
-        width: 150,
-        height: 80,
+    videoMinimized: {
+        width: 140,
+        height: 70,
     },
     videoWebMinimized: {
-        width: 150,
-        height: 80,
-        maxWidth: 150,
-        maxHeight: 80,
+        maxWidth: 140,
+        maxHeight: 70,
     },
     buttonsContainer: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: 20,
-        paddingTop: 5
+        paddingTop: 28,
+        paddingBottom: 3,
+        backgroundColor: Colors.emphasised.backgroundColor,
     },
     minimizedDetailsContainer: {
         flex: 1,
@@ -163,11 +169,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingRight: 7,
-        minHeight: 80
+        minHeight: 70
     },
     minimizedVideoTitleContainer: {
         maxWidth: Dimensions.get("window").width - 200,
-        marginLeft: 6,
+        marginLeft: 8,
     },
     minimizedVideoTitle: {
         fontSize: 14,
@@ -177,4 +183,20 @@ const styles = StyleSheet.create({
         width: "100%",
         height: Dimensions.get("window").height / 3.5,
     },
+    loadingContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 10,
+    },
+    topVideoTitleContainer: {
+        maxWidth: Dimensions.get("window").width - 100,
+        margin: "auto",
+        paddingHorizontal: 10,
+    },
+    topVideoTitle: {
+        color: Colors.dark.color,
+        fontWeight: "bold",
+    }
 });
