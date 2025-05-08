@@ -8,13 +8,17 @@ import SepiaSearch from "@/app/(main)/search";
 import {useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setCurrentInstance} from "@/slices/instancesSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
+import {VideoPlayer} from "@/components/Video/VideoPlayer";
+import { RootState } from "@/state/store";
+import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 
 
 export default function HomeLayout() {
     const Tab = createBottomTabNavigator();
     const dispatch = useDispatch();
+    const currentVideo = useSelector((state: RootState) => state.videoPlayer.currentVideo);
 
     useEffect(() => {
         AsyncStorage.getItem("instance")
@@ -26,30 +30,31 @@ export default function HomeLayout() {
     }, []);
 
     return (
-        <Tab.Navigator
-            initialRouteName="home"
-            screenOptions={{
-                tabBarActiveTintColor: Colors.emphasised.backgroundColor,
-                headerShown: false
-        }}
-        >
-            <Tab.Screen
-                name={"home"}
-                options={{
-                    title: "Home",
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+        <>
+            <Tab.Navigator
+                initialRouteName="home"
+                screenOptions={{
+                    tabBarActiveTintColor: Colors.emphasised.backgroundColor,
+                    headerShown: false
                 }}
-                component={HomeScreen}
-            />
-            <Tab.Screen
-                name={"search"}
-                options={{
-                    title: "Sepia Search",
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
-                }}
-                component={SepiaSearch}
-            />
-            {/*<Tab.Screen
+            >
+                <Tab.Screen
+                    name={"home"}
+                    options={{
+                        title: "Home",
+                        tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+                    }}
+                    component={HomeScreen}
+                />
+                <Tab.Screen
+                    name={"search"}
+                    options={{
+                        title: "Sepia Search",
+                        tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
+                    }}
+                    component={SepiaSearch}
+                />
+                {/*<Tab.Screen
                 name={"subscriptions"}
                 options={{
                     title: "Subscriptions",
@@ -57,14 +62,20 @@ export default function HomeLayout() {
                 }}
                 component={Subscriptions}
             />*/}
-            <Tab.Screen
-                name={"options"}
-                options={{
-                    title: "Options",
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="gears" color={color} />,
-                }}
-                component={Options}
-            />
-        </Tab.Navigator>
+                <Tab.Screen
+                    name={"options"}
+                    options={{
+                        title: "Options",
+                        tabBarIcon: ({ color }) => <FontAwesome size={28} name="gears" color={color} />,
+                    }}
+                    component={Options}
+                />
+            </Tab.Navigator>
+            {currentVideo &&
+                <VideoPlayer
+                    videoUrl={currentVideo}
+                />
+            }
+        </>
     );
 }

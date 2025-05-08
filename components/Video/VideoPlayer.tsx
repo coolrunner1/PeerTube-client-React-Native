@@ -2,9 +2,9 @@ import WebView from "react-native-webview";
 import {ActivityIndicator, Alert, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Video} from "@/types/Video";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useKeepAwake} from "expo-keep-awake";
 import formatPublishedDate from "@/utils/formatPublishedDate";
@@ -12,13 +12,11 @@ import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
 import shortenVideoTitle from "@/utils/shortenVideoTitle";
+import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 
 export const VideoPlayer = (
     props: {
         videoUrl: string,
-        closeVideo: () => void,
-        minimized: boolean,
-        setMinimized: Dispatch<SetStateAction<boolean>> ,
     }
 ) => {
     useKeepAwake();
@@ -26,6 +24,8 @@ export const VideoPlayer = (
 
     const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
+    const [minimized, setMinimized] = useState(false);
+    const dispatch = useDispatch();
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
@@ -44,6 +44,10 @@ export const VideoPlayer = (
             .then(json => setVideo(json))
             .catch(err => Alert.alert("error", err.toString()));
     }, [props.videoUrl]);
+
+    const closeVideo = () => {
+        dispatch(setCurrentVideo(""));
+    };
 
     useEffect(() => {
         console.log(video);
@@ -66,35 +70,34 @@ export const VideoPlayer = (
     }, [video, preferredPlayer]);
 
     const player = useVideoPlayer(videoSource, player => {
-        player.loop = true;
         player.play();
     });
 
     return (
         <View
-            style={[!props.minimized ? styles.videoPlayerContainer : styles.videoPlayerContainerMinimized, { backgroundColor: backgroundColor }]}
+            style={[!minimized ? styles.videoPlayerContainer : styles.videoPlayerContainerMinimized, { backgroundColor: backgroundColor }]}
         >
-            {!props.minimized &&
+            {!minimized &&
                 <View style={styles.buttonsContainer}>
-                    <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={() => props.setMinimized(true)} />
+                    <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={() => setMinimized(true)} />
                     {video &&
                         <View style={styles.topVideoTitleContainer} >
                             <Text style={styles.topVideoTitle}>{shortenVideoTitle(video.name)}</Text>
                         </View>
                     }
-                    <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
+                    <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />
                 </View>
             }
             {!video
                 ?
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator color={Colors.emphasised.backgroundColor} style={{margin: 'auto'}} size={"large"}/>
-                    {props.minimized && <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />}
+                    {minimized && <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />}
                 </View>
                 :
-                <View style={props.minimized && {flexDirection: "row"}}>
+                <View style={minimized && {flexDirection: "row"}}>
                     {preferredPlayer === "Web" ?
-                        <View style={!props.minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
+                        <View style={!minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
                             <WebView
                                 allowsFullscreenVideo={true}
                                 source={{
@@ -104,14 +107,14 @@ export const VideoPlayer = (
                         </View>
                         :
                         <VideoView
-                            style={!props.minimized ? styles.video : styles.videoMinimized}
+                            style={!minimized ? styles.video : styles.videoMinimized}
                             player={player}
                             allowsFullscreen
                             allowsPictureInPicture
                             startsPictureInPictureAutomatically
                         />
                     }
-                    {!props.minimized
+                    {!minimized
                         ?
                         <ScrollView>
                             <ThemedText>Work in progress</ThemedText>
@@ -126,11 +129,11 @@ export const VideoPlayer = (
                             {video.language.label !== "Unknown" && <ThemedText>Language: {video.language.label}</ThemedText>}
                         </ScrollView>
                         :
-                        <Pressable style={styles.minimizedDetailsContainer} onPress={() => props.setMinimized(false)}>
+                        <Pressable style={styles.minimizedDetailsContainer} onPress={() => setMinimized(false)}>
                             <View style={styles.minimizedVideoTitleContainer} >
                                 <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(video.name)}</ThemedText>
                             </View>
-                            <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={props.closeVideo} />
+                            <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />
                         </Pressable>
                     }
                 </View>
@@ -143,13 +146,19 @@ const styles = StyleSheet.create({
     videoPlayerContainer: {
         flex: 1,
         height: "100%",
+        width: "100%",
+        position: "absolute"
     },
     videoPlayerContainerMinimized: {
-        minHeight: 70
+        height: 70,
+        position: "absolute",
+        width: "100%",
+        bottom: 70,
     },
     videoMinimized: {
         width: 140,
         height: 70,
+        backgroundColor: "black"
     },
     videoWebMinimized: {
         maxWidth: 140,
@@ -182,6 +191,7 @@ const styles = StyleSheet.create({
     video: {
         width: "100%",
         height: Dimensions.get("window").height / 3.5,
+        backgroundColor: "black"
     },
     loadingContainer: {
         flex: 1,
@@ -198,5 +208,7 @@ const styles = StyleSheet.create({
     topVideoTitle: {
         color: Colors.dark.color,
         fontWeight: "bold",
+        fontSize: 16,
+        textAlign: "center",
     }
 });

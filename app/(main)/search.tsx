@@ -1,33 +1,30 @@
 import {
     StyleSheet,
     ActivityIndicator,
-    Animated,
     View,
     Alert
 } from "react-native";
-import ScrollView = Animated.ScrollView;
 import React, {useEffect, useRef, useState} from "react";
-import {VideoPlayer} from "@/components/Video/VideoPlayer";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {BlockedInstances} from "@/constants/BlockedInstances";
 import {VideoListEntry} from "@/types/VideoListEntry";
 import {VideosList} from "@/components/Video/VideosList";
+import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 
 const SepiaSearch = () => {
     const theme = useTheme();
     const [videos, setVideos] = useState<VideoListEntry[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [currentVideo, setCurrentVideo] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
-    const [minimized, setMinimized] = useState<boolean>(false);
+    const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
     const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
@@ -76,7 +73,7 @@ const SepiaSearch = () => {
             {loading && error &&
                 <SearchError error={error} onReloadPress={onReloadPress}/>
             }
-            {(!currentVideo || minimized) && !error &&
+            {!error &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Sepia Search"} />
                     <ContentCategories
@@ -91,7 +88,7 @@ const SepiaSearch = () => {
                             <VideosList
                                 videos={videos}
                                 onRefresh={onRefresh}
-                                setCurrentVideo={setCurrentVideo}
+                                setCurrentVideo={e => dispatch(setCurrentVideo(e))}
                                 loading={loading}
                                 endOfScreen={endOfScreen}
                                 setEndOfScreen={setEndOfScreen}
@@ -99,14 +96,6 @@ const SepiaSearch = () => {
                         }
                     </View>
                 </>
-            }
-            {currentVideo &&
-                <VideoPlayer
-                    videoUrl={currentVideo}
-                    closeVideo={closeVideo}
-                    minimized={minimized}
-                    setMinimized={setMinimized}
-                />
             }
         </>
     );
