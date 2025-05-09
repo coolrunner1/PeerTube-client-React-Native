@@ -76,7 +76,7 @@ const HomeScreen = () => {
             {!isLoading && isError &&
                 <ErrorView error={error.toString()} onReloadPress={onRefresh} />
             }
-            {!error &&
+            {!isError &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Trending"}/>
                     <ContentCategories
