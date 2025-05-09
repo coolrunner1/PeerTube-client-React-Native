@@ -1,16 +1,15 @@
-import {Video} from "@/types/Video";
+import {VideoPage} from "@/types/VideoPage";
 
-export const getVideos = async (currentInstance: string, clearVideos: boolean): Promise<Video[]> => {
-    await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`)
-        .then((res) => res.json())
-        .then((json) => {
-            setVideos(clearVideos ? json.data : [...videos, ...json.data]);
-            setLoading(false);
-        })
-        .catch((err) => {console.error(err); setError(err.toString())});
-    setEndOfScreen(false);
-}
+export const fetchVideos = async ({pageParam = 0, queryKey}: any): Promise<VideoPage> => {
+    const [_key, currentInstance, selectedCategory, search] = queryKey;
 
-export const searchVideos = async (): Promise<Video[]> => {
+    if (!currentInstance) {
+        throw new Error(`Failed to fetch videos`);
+    }
 
+    const res = await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&count=25&start=${pageParam}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`);
+    if (!res.ok) {
+        throw new Error(`Failed to fetch videos`);
+    }
+    return res.json();
 }

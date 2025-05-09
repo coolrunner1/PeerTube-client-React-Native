@@ -10,13 +10,12 @@ import HomeLayout from "@/app/(main)/_layout";
 import {useState} from "react";
 import {store} from "@/state/store";
 import {Provider} from "react-redux";
-import {QueryClient} from "@tanstack/query-core";
 import {QueryClientProvider} from "@tanstack/react-query";
+import {queryClient} from "@/api/queryClient";
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
     const Stack = createNativeStackNavigator();
-    const queryClient = new QueryClient();
 
     return (
         <QueryClientProvider client={queryClient}>

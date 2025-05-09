@@ -3,7 +3,7 @@ import {
     ActivityIndicator,
     View,
 } from "react-native";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {VideoListEntry} from "@/types/VideoListEntry";
@@ -14,17 +14,14 @@ import {RootState} from "@/state/store";
 import {SearchError} from "@/components/Search/SearchError";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 import {VideosList} from "@/components/Video/VideosList";
-import {getVideos} from "@/api/videos";
+import {fetchVideos} from "@/api/videos";
 import { setCurrentVideo } from "@/slices/videoPlayerSlice";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {queryClient} from "@/api/queryClient";
 
 const HomeScreen = () => {
     const theme = useTheme();
-    const [videos, setVideos] = useState<VideoListEntry[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>("");
-    const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [showFilters, setShowFilters] = useState<boolean>(false);
-    const [minimized, setMinimized] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
@@ -32,53 +29,52 @@ const HomeScreen = () => {
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
-    const loadVideos = async (clearVideos: boolean) => {
-        //getVideos()
-        const controller = new AbortController();
-        const signal = controller.signal;
+    const queryKey = useMemo(() =>
+        ['videos', currentInstance, selectedCategory, search],
+        [currentInstance, selectedCategory, search]);
 
-        setTimeout(() => {
-            controller.abort();
-        }, 5000);
+    const {
+        data,
+        isLoading,
+        error,
+        isError,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+        refetch
+    } = useInfiniteQuery({
+        queryKey,
+        queryFn: fetchVideos,
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.data.length === 0) return undefined;
+            return pages.flatMap(p => p.data).length;
+        },
+        //gcTime: 60000,
+        enabled: currentInstance !== "",
+    });
 
-        await fetch(`${currentInstance}/api/v1/${search ? `search/` : ""}videos?${search ? `search=${search}` : ""}&start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}`, {signal})
-            .then((res) => res.json())
-            .then((json) => {
-                setVideos(clearVideos ? json.data : [...videos, ...json.data]);
-                setLoading(false);
-            })
-            .catch((err) => {console.error(err); setError(err.toString())});
-        setEndOfScreen(false);
-    };
+    const videos:Map<string, VideoListEntry> = useMemo(() => {
+        return new Map(
+            data?.pages.flatMap(page =>
+                page.data.map(video => [video.uuid, video])
+            ) ?? []
+        );
+    }, [data?.pages]);
 
-    const onRefresh = async () => {
-        setLoading(true);
-        await loadVideos(true);
-    };
-
-    const onReloadPress = async () => {
-        setError("");
-        await loadVideos(true);
-    };
-
-    const closeVideo = () => setCurrentVideo("");
+    const onRefresh = () => {
+        queryClient.removeQueries({queryKey});
+        refetch();
+    }
 
     useEffect(() => {
-        if (!currentInstance) return;
-        if (error) setError("");
-        setLoading(true);
-        loadVideos(true);
+        refetch()
     }, [selectedCategory, search, currentInstance]);
-
-    useEffect(() => {
-        if (!currentInstance) return;
-        loadVideos(false);
-    }, [endOfScreen]);
 
     return (
         <>
-            {loading && error &&
-                <SearchError error={error} onReloadPress={onReloadPress}/>
+            {!isLoading && isError &&
+                <SearchError error={error.toString()} onReloadPress={onRefresh} />
             }
             {!error &&
                 <>
@@ -91,16 +87,20 @@ const HomeScreen = () => {
                         onCloseButtonPress={() => setShowFilters(false)}
                     />
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
-                        {loading
+                        {isLoading
                             ? <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
                             : <VideosList
-                                videos={videos}
+                                videos={[...videos.values()]}
                                 currentInstance={currentInstance}
                                 onRefresh={onRefresh}
                                 setCurrentVideo={(e) => dispatch(setCurrentVideo(e))}
-                                loading={loading}
-                                endOfScreen={endOfScreen}
-                                setEndOfScreen={setEndOfScreen}
+                                loading={isLoading}
+                                endOfScreen={isFetchingNextPage}
+                                setEndOfScreen={() => {
+                                    if (hasNextPage && !isFetchingNextPage) {
+                                        fetchNextPage();
+                                    }
+                                }}
                             />
                         }
                     </View>
