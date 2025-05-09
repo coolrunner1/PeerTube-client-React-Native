@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
-    "version": "1.0.0",
+    "name": "PTPlay",
+    "slug": "PTPlay",
+    "version": "0.0.1a",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/peertube-temp-icon.png",
+    "scheme": "ptplay",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.coolrunner.myapp",
+      "bundleIdentifier": "com.coolrunner.ptplay",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.coolrunner.myapp"
+      "package": "com.coolrunner.ptplay"
     },
     "web": {
       "bundler": "metro",
