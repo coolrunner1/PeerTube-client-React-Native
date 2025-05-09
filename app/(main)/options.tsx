@@ -8,10 +8,10 @@ import {setCurrentInstance} from "@/slices/instancesSlice";
 import {RootState} from "@/state/store";
 import {useState} from "react";
 import {Colors} from "@/constants/Colors";
-import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
 import {checkInstanceValidity} from "@/api/checkInstanceValidity";
+import {useThemedColors} from "@/hooks/useThemedColors";
 
 const Options = ({navigation}: {navigation: any}) => {
 
@@ -19,7 +19,6 @@ const Options = ({navigation}: {navigation: any}) => {
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
     const [instance, setInstance] = useState<string>(currentInstance);
-    const theme = useTheme();
 
     const playerOptions = ["Native", "Web"];
 
@@ -55,10 +54,10 @@ const Options = ({navigation}: {navigation: any}) => {
         }
     }
 
-    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
+    const {backgroundColor} = useThemedColors();
 
     return (
-        <ScrollView style={[styles.container, {backgroundColor: backgroundColor}]}>
+        <ScrollView style={[styles.container, {backgroundColor}]}>
             {/**
              <ThemedText style={{marginTop: 50}}>Not implemented!</ThemedText>
              <Button title="Log in" onPress={() => {}} />

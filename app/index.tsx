@@ -1,14 +1,13 @@
 import {StyleSheet, View, ImageBackground} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
-import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {navigate} from "expo-router/build/global-state/routing";
+import {useThemedColors} from "@/hooks/useThemedColors";
 
 export default function Index({navigation}: {navigation: any}) {
-    const theme = useTheme();
+    const {backgroundColor} = useThemedColors();
 
     useEffect(() => {
         AsyncStorage.getItem("login")
@@ -24,9 +23,7 @@ export default function Index({navigation}: {navigation: any}) {
             }}
         >
             <View style={
-                [styles.mainContainer, theme.dark
-                    ? {backgroundColor: Colors.dark.backgroundColor}
-                    : {backgroundColor: Colors.light.backgroundColor}]
+                [styles.mainContainer, {backgroundColor}]
             }>
                 <ThemedText style={{fontSize: 40, fontWeight: "bold"}}>Welcome back!</ThemedText>
                 <View style={{flex: 1, gap: 10, alignItems: "center", justifyContent: "center"}}>

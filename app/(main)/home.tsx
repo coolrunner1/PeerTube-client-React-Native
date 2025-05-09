@@ -4,7 +4,6 @@ import {
     View,
 } from "react-native";
 import React, {useEffect, useMemo, useState} from "react";
-import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {VideoListEntry} from "@/types/VideoListEntry";
 import {Header} from "@/components/Search/Header";
@@ -18,16 +17,16 @@ import {fetchVideos} from "@/api/videos";
 import { setCurrentVideo } from "@/slices/videoPlayerSlice";
 import {useInfiniteQuery} from "@tanstack/react-query";
 import {queryClient} from "@/api/queryClient";
+import {useThemedColors} from "@/hooks/useThemedColors";
 
 const HomeScreen = () => {
-    const theme = useTheme();
     const [showFilters, setShowFilters] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
-    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
+    const {backgroundColor} = useThemedColors();
 
     const queryKey = useMemo(() =>
         ['videos', currentInstance, selectedCategory, search],
@@ -86,7 +85,7 @@ const HomeScreen = () => {
                         showFilters={showFilters}
                         onCloseButtonPress={() => setShowFilters(false)}
                     />
-                    <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+                    <View style={[styles.container, {backgroundColor}]}>
                         {isLoading
                             ? <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
                             : <VideosList
