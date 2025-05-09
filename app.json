@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PTPlay",
-    "slug": "PTPlay",
+    "slug": "my-app",
     "version": "0.0.1a",
     "orientation": "portrait",
     "icon": "./assets/images/peertube-temp-icon.png",
