@@ -49,12 +49,14 @@ const SepiaSearch = () => {
         },
     });
 
-    const videos:Map<string, VideoListEntry> = useMemo(() => {
-        return new Map(
-            data?.pages.flatMap(page =>
-                page.data.map(video => [video.uuid, video])
-            ) ?? []
+    const videos = useMemo(() => {
+        const videoObject: { [key: string]: VideoListEntry } = {};
+        data?.pages?.flatMap(page =>
+            page.data.map((video) => {
+                videoObject[video.uuid] = video;
+            })
         );
+        return videoObject;
     }, [data?.pages]);
 
     const onRefresh = () => {
@@ -90,7 +92,7 @@ const SepiaSearch = () => {
                         }
                         {!isLoading &&
                             <VideosList
-                                videos={[...videos.values()]}
+                                videos={Object.values(videos)}
                                 onRefresh={onRefresh}
                                 setCurrentVideo={e => dispatch(setCurrentVideo(e))}
                                 loading={isLoading}
