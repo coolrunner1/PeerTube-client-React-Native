@@ -79,13 +79,13 @@ export const VideoPlayer = (
         >
             {!minimized &&
                 <View style={styles.buttonsContainer}>
-                    <FontAwesome6 name={"chevron-down"} size={35} color={textColor} onPress={() => setMinimized(true)} />
+                    <FontAwesome6 name={"chevron-down"} size={35} color={Colors.light.backgroundColor} onPress={() => setMinimized(true)} />
                     {video &&
                         <View style={styles.topVideoTitleContainer} >
                             <Text style={styles.topVideoTitle}>{shortenVideoTitle(video.name)}</Text>
                         </View>
                     }
-                    <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />
+                    <FontAwesome6 name={"xmark"} size={35} color={Colors.light.backgroundColor} onPress={closeVideo} />
                 </View>
             }
             {!video
