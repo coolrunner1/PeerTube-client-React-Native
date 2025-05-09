@@ -11,6 +11,7 @@ import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
+import {checkInstanceValidity} from "@/api/checkInstanceValidity";
 
 const Options = ({navigation}: {navigation: any}) => {
 
@@ -40,11 +41,7 @@ const Options = ({navigation}: {navigation: any}) => {
             newInstance = "https://"+instance;
         }
 
-        let validInstance = false;
-
-        await fetch(`${newInstance}/api/v1/config`)
-            .then(res => res.status === 200 ? validInstance = true : validInstance = false)
-            .catch(() => {})
+        const validInstance = await checkInstanceValidity(newInstance);
 
         if (!validInstance) {
             Alert.alert('Error', 'Provided URL is either not a PeerTube instance or this instance is not available currently.', [

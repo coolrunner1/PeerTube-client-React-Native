@@ -8,6 +8,8 @@ import {ContentCategoryButton} from "@/components/Search/ContentCategoryButton";
 import {RootState} from "@/state/store";
 import {IconButton} from "@/components/Global/IconButton";
 import {SepiaSearchCategories} from "@/constants/SepiaSearchCategories";
+import {useQuery} from "@tanstack/react-query";
+import {getCategories} from "@/api/categories";
 
 export const ContentCategories = (
     props: {
@@ -16,30 +18,35 @@ export const ContentCategories = (
     }
 ) => {
     const [categories, setCategories] = useState<string[]>([]);
-    const [loaded, setLoaded] = useState(false);
     const theme = useTheme();
     const dispatch = useDispatch();
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
+    const {data, isLoading} = useQuery({
+        queryKey: ['categories', currentInstance],
+        queryFn: getCategories,
+        enabled: currentInstance !== "" && !props.sepiaSearch
+    });
+
     useEffect(() => {
         if (props.sepiaSearch) {
             setCategories(SepiaSearchCategories);
-            setLoaded(true);
             return;
         }
-        if (!currentInstance) return;
-        fetch(`${currentInstance}/api/v1/videos/categories`)
-            .then((res) => res.json())
-            .then((json) => {setCategories(["All", ...Object.values(json) as string[]]); setLoaded(true);})
-            .catch((error) => console.error(error));
-    }, [currentInstance]);
+    }, []);
+
+    useEffect(() => {
+        if (!data) return;
+        setCategories(["All", ...Object.values(data) as string[]]);
+    }, [data]);
 
     return (
         <ScrollView horizontal={true} style={[styles.container, theme.dark
             ? {backgroundColor: Colors.dark.backgroundColor}
             : {backgroundColor: Colors.light.backgroundColor}]}>
-            {!loaded && <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>}
-            {loaded &&
+            {isLoading && !props.sepiaSearch
+                ? <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>
+                :
                 <>
                     <IconButton
                         name={"filter"}

@@ -1,9 +1,8 @@
 import WebView from "react-native-webview";
-import {ActivityIndicator, Alert, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {ActivityIndicator, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import React, {useEffect, useState} from "react";
-import {Video} from "@/types/Video";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useKeepAwake} from "expo-keep-awake";
@@ -13,6 +12,9 @@ import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
 import shortenVideoTitle from "@/utils/shortenVideoTitle";
 import {setCurrentVideo} from "@/slices/videoPlayerSlice";
+import {useQuery} from "@tanstack/react-query";
+import {getVideo} from "@/api/videos";
+import {ErrorView} from "@/components/Global/ErrorView";
 
 export const VideoPlayer = (
     props: {
@@ -22,7 +24,6 @@ export const VideoPlayer = (
     useKeepAwake();
     const theme = useTheme();
 
-    const [video, setVideo] = useState<Video | null>(null);
     const [videoSource, setVideoSource] = useState<string>("");
     const [minimized, setMinimized] = useState(false);
     const dispatch = useDispatch();
@@ -31,43 +32,34 @@ export const VideoPlayer = (
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
     const textColor = theme.dark ?  Colors.dark.color : Colors.light.color;
 
-    useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-
-        setTimeout(() => {
-            controller.abort();
-        }, 5000);
-
-        fetch(props.videoUrl, {signal})
-            .then(data => {console.log(data); return data.json()})
-            .then(json => setVideo(json))
-            .catch(err => Alert.alert("error", err.toString()));
-    }, [props.videoUrl]);
+    const {data, isLoading, isError, error, refetch} = useQuery({
+        queryKey: ["video", props.videoUrl],
+        queryFn: getVideo,
+    });
 
     const closeVideo = () => {
         dispatch(setCurrentVideo(""));
     };
 
     useEffect(() => {
-        console.log(video);
-        if (!video) {
+        console.log(data);
+        if (!data) {
             return;
         }
         if (preferredPlayer === "Web") {
             setVideoSource("");
             return;
         }
-        if (Platform.OS !== "web" && typeof(video.streamingPlaylists[0]) !== "undefined") {
-            setVideoSource(video.streamingPlaylists[0].playlistUrl);
+        if (Platform.OS !== "web" && typeof(data.streamingPlaylists[0]) !== "undefined") {
+            setVideoSource(data.streamingPlaylists[0].playlistUrl);
             return;
         }
-        if (video.files.length > 0) {
-            setVideoSource(video.files[0].fileUrl);
+        if (data.files.length > 0) {
+            setVideoSource(data.files[0].fileUrl);
             return;
         }
-        setVideoSource(video.streamingPlaylists[0].files[0].fileUrl);
-    }, [video, preferredPlayer]);
+        setVideoSource(data.streamingPlaylists[0].files[0].fileUrl);
+    }, [data, preferredPlayer]);
 
     const player = useVideoPlayer(videoSource, player => {
         player.play();
@@ -80,28 +72,35 @@ export const VideoPlayer = (
             {!minimized &&
                 <View style={styles.buttonsContainer}>
                     <FontAwesome6 name={"chevron-down"} size={35} color={Colors.light.backgroundColor} onPress={() => setMinimized(true)} />
-                    {video &&
+                    {data &&
                         <View style={styles.topVideoTitleContainer} >
-                            <Text style={styles.topVideoTitle}>{shortenVideoTitle(video.name)}</Text>
+                            <Text style={styles.topVideoTitle}>{shortenVideoTitle(data.name)}</Text>
                         </View>
                     }
                     <FontAwesome6 name={"xmark"} size={35} color={Colors.light.backgroundColor} onPress={closeVideo} />
                 </View>
             }
-            {!video
-                ?
+            {isError && (!minimized
+                    ? <ErrorView error={error.toString()} onReloadPress={refetch} />
+                    : <Pressable onPress={closeVideo} style={{flex: 1}}>
+                        <ThemedText style={{margin: 'auto'}}>{error.toString()}</ThemedText>
+                    </Pressable>
+            )
+            }
+            {isLoading &&
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator color={Colors.emphasised.backgroundColor} style={{margin: 'auto'}} size={"large"}/>
                     {minimized && <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />}
                 </View>
-                :
+            }
+            {data && !isError &&
                 <View style={minimized && {flexDirection: "row"}}>
                     {preferredPlayer === "Web" ?
                         <View style={!minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
                             <WebView
                                 allowsFullscreenVideo={true}
                                 source={{
-                                    uri: `https://${video.channel.host}${video.embedPath}`
+                                    uri: `https://${data.channel.host}${data.embedPath}`
                                 }}
                             />
                         </View>
@@ -114,24 +113,24 @@ export const VideoPlayer = (
                             startsPictureInPictureAutomatically
                         />
                     }
-                    {!minimized
-                        ?
+                    {!minimized && data &&
                         <ScrollView>
                             <ThemedText>Work in progress</ThemedText>
-                            <ThemedText>Published at: {formatPublishedDate(video.publishedAt)}</ThemedText>
-                            <ThemedText>Title: {video.name}</ThemedText>
-                            <ThemedText>Description: {video.truncatedDescription}</ThemedText>
-                            <ThemedText>Views: {video.views}</ThemedText>
-                            <ThemedText>Likes: {video.likes}</ThemedText>
-                            <ThemedText>Dislikes: {video.dislikes}</ThemedText>
+                            <ThemedText>Published at: {formatPublishedDate(data.publishedAt)}</ThemedText>
+                            <ThemedText>Title: {data.name}</ThemedText>
+                            <ThemedText>Description: {data.truncatedDescription}</ThemedText>
+                            <ThemedText>Views: {data.views}</ThemedText>
+                            <ThemedText>Likes: {data.likes}</ThemedText>
+                            <ThemedText>Dislikes: {data.dislikes}</ThemedText>
                             <ThemedText>Tags:</ThemedText>
-                            {video.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
-                            {video.language.label !== "Unknown" && <ThemedText>Language: {video.language.label}</ThemedText>}
+                            {data.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
+                            {data.language.label !== "Unknown" && <ThemedText>Language: {data.language.label}</ThemedText>}
                         </ScrollView>
-                        :
+                    }
+                    {minimized && data &&
                         <Pressable style={styles.minimizedDetailsContainer} onPress={() => setMinimized(false)}>
                             <View style={styles.minimizedVideoTitleContainer} >
-                                <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(video.name)}</ThemedText>
+                                <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(data.name)}</ThemedText>
                             </View>
                             <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />
                         </Pressable>

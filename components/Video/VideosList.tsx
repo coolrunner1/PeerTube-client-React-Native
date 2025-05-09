@@ -20,8 +20,8 @@ export const VideosList = (
         onRefresh: () => void;
         setCurrentVideo: (video: string) => void;
         loading: boolean;
-        endOfScreen: boolean;
-        setEndOfScreen: (endOfScreen: boolean) => void;
+        isFetchingNextPage: boolean;
+        setEndOfScreen: () => void;
     }
 ) => {
 
@@ -59,10 +59,10 @@ export const VideosList = (
                     let paddingToBottom = 10;
                     paddingToBottom += e.nativeEvent.layoutMeasurement.height;
                     if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-                        props.setEndOfScreen(true);
+                        props.setEndOfScreen();
                     }
                 }}
-                ListFooterComponent={props.endOfScreen ?
+                ListFooterComponent={props.isFetchingNextPage ?
                     <ActivityIndicator color={Colors.emphasised.backgroundColor}/> : null}
             />
         </View>

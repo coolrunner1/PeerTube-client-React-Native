@@ -11,7 +11,7 @@ import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
-import {SearchError} from "@/components/Search/SearchError";
+import {ErrorView} from "@/components/Global/ErrorView";
 import {HomeFiltersMenu} from "@/components/Search/HomeFiltersMenu";
 import {VideosList} from "@/components/Video/VideosList";
 import {fetchVideos} from "@/api/videos";
@@ -74,7 +74,7 @@ const HomeScreen = () => {
     return (
         <>
             {!isLoading && isError &&
-                <SearchError error={error.toString()} onReloadPress={onRefresh} />
+                <ErrorView error={error.toString()} onReloadPress={onRefresh} />
             }
             {!error &&
                 <>
@@ -95,7 +95,7 @@ const HomeScreen = () => {
                                 onRefresh={onRefresh}
                                 setCurrentVideo={(e) => dispatch(setCurrentVideo(e))}
                                 loading={isLoading}
-                                endOfScreen={isFetchingNextPage}
+                                isFetchingNextPage={isFetchingNextPage}
                                 setEndOfScreen={() => {
                                     if (hasNextPage && !isFetchingNextPage) {
                                         fetchNextPage();

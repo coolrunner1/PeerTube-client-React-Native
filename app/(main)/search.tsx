@@ -4,63 +4,68 @@ import {
     View,
     Alert
 } from "react-native";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {Header} from "@/components/Search/Header";
 import {ContentCategories} from "@/components/Search/ContentCategories";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
-import {SearchError} from "@/components/Search/SearchError";
-import {BlockedInstances} from "@/constants/BlockedInstances";
+import {ErrorView} from "@/components/Global/ErrorView";
 import {VideoListEntry} from "@/types/VideoListEntry";
 import {VideosList} from "@/components/Video/VideosList";
 import {setCurrentVideo} from "@/slices/videoPlayerSlice";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {queryClient} from "@/api/queryClient";
+import {fetchSepiaVideos} from "@/api/sepiaSearch";
 
 const SepiaSearch = () => {
     const theme = useTheme();
-    const [videos, setVideos] = useState<VideoListEntry[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>("");
-    const [endOfScreen, setEndOfScreen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
-    const blockedInstances = useRef<string>(BlockedInstances.join("&blockedHosts[]="));
 
     const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
-    const loadVideos = async (clearVideos: boolean) => {
-        await fetch(`https://sepiasearch.org/api/v1/search/videos?${search ? `search=${search}&` : ""}start=${clearVideos ? 0 : videos.length}${selectedCategory ? `&categoryOneOf=${selectedCategory}` : ""}&blockedHosts[]=${blockedInstances.current}`)
-            .then((res) => res.json())
-            .then((json) => {
-                setVideos(clearVideos ? json.data : [...videos, ...json.data]);
-                setLoading(false);
-            })
-            .catch((err) => {console.error(err); setError(err.toString())});
-        setEndOfScreen(false);
-    };
+    const queryKey = useMemo(() =>
+            ['sepiaVideos', selectedCategory, search],
+        [selectedCategory, search]);
 
-    const onRefresh = async () => {
-        setLoading(true);
-        await loadVideos(true);
-    };
+    const {
+        data,
+        isLoading,
+        error,
+        isError,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+        refetch
+    } = useInfiniteQuery({
+        queryKey,
+        queryFn: fetchSepiaVideos,
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.data.length === 0) return undefined;
+            return pages.flatMap(p => p.data).length;
+        },
+    });
 
-    const onReloadPress = async () => {
-        setError("");
-        await loadVideos(true);
-    };
+    const videos:Map<string, VideoListEntry> = useMemo(() => {
+        return new Map(
+            data?.pages.flatMap(page =>
+                page.data.map(video => [video.uuid, video])
+            ) ?? []
+        );
+    }, [data?.pages]);
 
-    const closeVideo = () => setCurrentVideo("");
+    const onRefresh = () => {
+        queryClient.removeQueries({queryKey});
+        refetch();
+    }
 
     useEffect(() => {
-        setLoading(true);
-        loadVideos(true);
+        refetch()
     }, [selectedCategory, search]);
-
-    useEffect(() => {
-        loadVideos(false);
-    }, [endOfScreen]);
 
     useEffect(() => {
         Alert.alert('Warning', 'Sepia search is a global search utility that gathers videos from hundreds of instances. You might come across illegal content, nsfw content and insane conspiracy theories. Proceed with discretion.', [
@@ -70,10 +75,10 @@ const SepiaSearch = () => {
 
     return (
         <>
-            {loading && error &&
-                <SearchError error={error} onReloadPress={onReloadPress}/>
+            {isLoading && isError &&
+                <ErrorView error={error} onReloadPress={onRefresh}/>
             }
-            {!error &&
+            {!isError &&
                 <>
                     <Header setSearch={setSearch} search={search} title={"Sepia Search"} />
                     <ContentCategories
@@ -81,17 +86,21 @@ const SepiaSearch = () => {
                         sepiaSearch={true}
                     />
                     <View style={[styles.container, {backgroundColor: backgroundColor}]}>
-                        {loading &&
+                        {isLoading &&
                             <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
                         }
-                        {!loading &&
+                        {!isLoading &&
                             <VideosList
-                                videos={videos}
+                                videos={[...videos.values()]}
                                 onRefresh={onRefresh}
                                 setCurrentVideo={e => dispatch(setCurrentVideo(e))}
-                                loading={loading}
-                                endOfScreen={endOfScreen}
-                                setEndOfScreen={setEndOfScreen}
+                                loading={isLoading}
+                                isFetchingNextPage={isFetchingNextPage}
+                                setEndOfScreen={() => {
+                                    if (hasNextPage && !isFetchingNextPage) {
+                                        fetchNextPage();
+                                    }
+                                }}
                             />
                         }
                     </View>

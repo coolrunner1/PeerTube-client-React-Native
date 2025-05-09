@@ -4,7 +4,7 @@ import {StyleSheet, View} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {useTheme} from "@react-navigation/core";
 
-export const SearchError = (
+export const ErrorView = (
     props: {
         error: string;
         onReloadPress: () => void;
