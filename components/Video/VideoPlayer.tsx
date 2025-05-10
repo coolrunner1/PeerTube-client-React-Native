@@ -26,6 +26,7 @@ import {getVideo} from "@/api/videos";
 import {ErrorView} from "@/components/Global/ErrorView";
 import {ThemedView} from "@/components/Global/ThemedView";
 import {useTextColor} from "@/hooks/useTextColor";
+import {useCheckLandscape} from "@/hooks/useCheckLandscape";
 
 export const VideoPlayer = (
     props: {
@@ -34,8 +35,7 @@ export const VideoPlayer = (
 ) => {
     useKeepAwake();
     const color = useTextColor();
-    const {height, width} = useWindowDimensions();
-    const isLandscape = width > height;
+    const isLandscape = useCheckLandscape();
 
     const [videoSource, setVideoSource] = useState<string>("");
     const [minimized, setMinimized] = useState(false);
@@ -109,7 +109,8 @@ export const VideoPlayer = (
                         : {flexDirection: "column"}
                 }>
                     {preferredPlayer === "Web" ?
-                        <View style={!minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
+                        <View style={minimized ? [styles.videoMinimized, styles.videoWebMinimized]
+                            : isLandscape ? styles.videoLandscape : styles.video}>
                             <WebView
                                 allowsFullscreenVideo={true}
                                 source={{
