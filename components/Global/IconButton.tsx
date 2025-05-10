@@ -1,8 +1,6 @@
 import {Pressable, StyleProp, StyleSheet, ViewStyle} from "react-native";
-import {ThemedText} from "@/components/Global/ThemedText";
-import {useTheme} from "@react-navigation/core";
-import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
+import {useThemedColors} from "@/hooks/useThemedColors";
 
 export const IconButton = (
     props: {
@@ -13,23 +11,20 @@ export const IconButton = (
         style?: StyleProp<ViewStyle>;
     }
 ) => {
-    const theme = useTheme();
-    const iconColor = theme.dark ? Colors.light.color : Colors.dark.color;
+    const {color, backgroundColor} = useThemedColors({invert: true});
 
     return (
         <Pressable
             style={[
                 styles.button,
-                theme.dark
-                    ? {backgroundColor: Colors.light.backgroundColor}
-                    : {backgroundColor: Colors.dark.backgroundColor},
+                {backgroundColor},
                 props.style,
             ]}
             onPress={props.onPress}>
             <FontAwesome6
                 name={props.name}
                 size={props.customIconSize ? props.customIconSize : 20}
-                color={props.customIconColor ? props.customIconColor : iconColor}
+                color={props.customIconColor ? props.customIconColor : color}
             />
         </Pressable>
     );

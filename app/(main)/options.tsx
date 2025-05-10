@@ -11,11 +11,12 @@ import {Colors} from "@/constants/Colors";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
 import {checkInstanceValidity} from "@/api/checkInstanceValidity";
-import {useThemedColors} from "@/hooks/useThemedColors";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 const Options = ({navigation}: {navigation: any}) => {
 
     const dispatch = useDispatch();
+    const backgroundColor = useBackgroundColor();
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
     const [instance, setInstance] = useState<string>(currentInstance);
@@ -53,8 +54,6 @@ const Options = ({navigation}: {navigation: any}) => {
             dispatch(setCurrentInstance(newInstance));
         }
     }
-
-    const {backgroundColor} = useThemedColors();
 
     return (
         <ScrollView style={[styles.container, {backgroundColor}]}>

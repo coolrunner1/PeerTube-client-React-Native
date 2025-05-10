@@ -4,10 +4,10 @@ import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useThemedColors} from "@/hooks/useThemedColors";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 export default function Index({navigation}: {navigation: any}) {
-    const {backgroundColor} = useThemedColors();
+    const backgroundColor = useBackgroundColor();
 
     useEffect(() => {
         AsyncStorage.getItem("login")

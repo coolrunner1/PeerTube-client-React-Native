@@ -17,7 +17,7 @@ import {fetchVideos} from "@/api/videos";
 import { setCurrentVideo } from "@/slices/videoPlayerSlice";
 import {useInfiniteQuery} from "@tanstack/react-query";
 import {queryClient} from "@/api/queryClient";
-import {useThemedColors} from "@/hooks/useThemedColors";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 const HomeScreen = () => {
     const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -26,7 +26,7 @@ const HomeScreen = () => {
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedCategory);
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
-    const {backgroundColor} = useThemedColors();
+    const backgroundColor = useBackgroundColor();
 
     const queryKey = useMemo(() =>
         ['videos', currentInstance, selectedCategory, search],

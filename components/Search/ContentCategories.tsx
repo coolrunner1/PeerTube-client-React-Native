@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {ActivityIndicator, ScrollView, StyleSheet} from "react-native";
-import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setSelectedCategory, setSelectedSepiaCategory} from "@/slices/filtersSlice";
@@ -10,6 +9,7 @@ import {IconButton} from "@/components/Global/IconButton";
 import {SepiaSearchCategories} from "@/constants/SepiaSearchCategories";
 import {useQuery} from "@tanstack/react-query";
 import {getCategories} from "@/api/categories";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 export const ContentCategories = (
     props: {
@@ -17,8 +17,8 @@ export const ContentCategories = (
         sepiaSearch?: boolean;
     }
 ) => {
+    const backgroundColor = useBackgroundColor();
     const [categories, setCategories] = useState<string[]>([]);
-    const theme = useTheme();
     const dispatch = useDispatch();
     const currentInstance = useSelector((state: RootState) => state.instances.currentInstance);
 
@@ -41,9 +41,7 @@ export const ContentCategories = (
     }, [data]);
 
     return (
-        <ScrollView horizontal={true} style={[styles.container, theme.dark
-            ? {backgroundColor: Colors.dark.backgroundColor}
-            : {backgroundColor: Colors.light.backgroundColor}]}>
+        <ScrollView horizontal={true} style={[styles.container, {backgroundColor}]}>
             {isLoading && !props.sepiaSearch
                 ? <ActivityIndicator size="large" color={Colors.emphasised.backgroundColor}/>
                 :

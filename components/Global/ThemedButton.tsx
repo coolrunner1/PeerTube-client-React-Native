@@ -1,7 +1,6 @@
 import {Pressable, StyleProp, StyleSheet, TextStyle, ViewStyle} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
-import {useTheme} from "@react-navigation/core";
-import {Colors} from "@/constants/Colors";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 export const ThemedButton = (
     props: {
@@ -11,15 +10,13 @@ export const ThemedButton = (
         textStyle?: StyleProp<TextStyle>;
     }
 ) => {
-    const theme = useTheme();
+    const backgroundColor = useBackgroundColor({invert: true});
 
     return (
         <Pressable
             style={[
                 styles.button,
-                theme.dark
-                    ? {backgroundColor: Colors.light.backgroundColor}
-                    : {backgroundColor: Colors.dark.backgroundColor},
+                {backgroundColor},
                 props.style,
             ]}
             onPress={props.onPress}>

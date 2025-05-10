@@ -14,7 +14,7 @@ export const useThemedColors = (
         : theme.dark
             ? Colors.dark.backgroundColor
             : Colors.light.backgroundColor,
-    color: !props.invert
+    color: props.invert
         ? theme.dark
             ? Colors.light.color
             : Colors.dark.color

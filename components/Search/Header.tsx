@@ -1,5 +1,4 @@
-import {NativeSyntheticEvent, StyleSheet, TextInputKeyPressEventData, View, Text} from "react-native";
-import {ThemedText} from "@/components/Global/ThemedText";
+import {StyleSheet, View, Text} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useEffect, useState} from "react";

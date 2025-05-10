@@ -1,8 +1,7 @@
 import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
-import {StyleSheet, View} from "react-native";
-import {Colors} from "@/constants/Colors";
-import {useTheme} from "@react-navigation/core";
+import {StyleSheet} from "react-native";
+import {ThemedView} from "@/components/Global/ThemedView";
 
 export const ErrorView = (
     props: {
@@ -10,12 +9,9 @@ export const ErrorView = (
         onReloadPress: () => void;
     }
 ) => {
-    const theme = useTheme();
-
-    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
 
     return (
-        <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+        <ThemedView style={styles.container}>
                 <ThemedText
                     style={{fontSize: 18, fontWeight: "bold", marginBottom: 5}}
                 >Selected PeerTube instance might be down</ThemedText>
@@ -26,7 +22,7 @@ export const ErrorView = (
                     style={{marginTop: 10}}
                     onPress={props.onReloadPress}
                 />
-        </View>
+        </ThemedView>
     );
 };
 

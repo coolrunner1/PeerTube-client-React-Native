@@ -1,10 +1,10 @@
 import {Pressable, StyleSheet} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
-import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useEffect, useState} from "react";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 export const ContentCategoryButton = (
     props: {
@@ -14,7 +14,7 @@ export const ContentCategoryButton = (
         onPress: () => void;
     }
 ) => {
-    const theme = useTheme();
+    const backgroundColor = useBackgroundColor({invert: true});
     const selectedCategory = useSelector((state: RootState)=> state.filters.selectedCategory);
     const selectedSepiaCategory = useSelector((state: RootState)=> state.filters.selectedSepiaCategory);
     const [selected, setSelected] = useState<boolean>(false);
@@ -45,9 +45,7 @@ export const ContentCategoryButton = (
         <Pressable
             style={[
                 styles.button,
-                theme.dark
-                    ? {backgroundColor: Colors.light.backgroundColor}
-                    : {backgroundColor: Colors.dark.backgroundColor},
+                {backgroundColor},
                 selected && {backgroundColor: Colors.emphasised.backgroundColor}
             ]}
             onPress={props.onPress}>

@@ -1,12 +1,11 @@
-import {Button, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {ThemedButton} from "@/components/Global/ThemedButton";
-import {useTheme} from "@react-navigation/core";
 import {useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useThemedColors} from "@/hooks/useThemedColors";
+import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
 const Registration = ({navigation}: {navigation: any}) => {
     const [username, setUsername] = useState<string>("");
@@ -23,7 +22,7 @@ const Registration = ({navigation}: {navigation: any}) => {
             );
     };
 
-    const {backgroundColor} = useThemedColors();
+    const backgroundColor = useBackgroundColor();
 
     const validateRegistration = () => {
         if (!username || !validateEmail(email) || !password || password !== confirmPassword) {

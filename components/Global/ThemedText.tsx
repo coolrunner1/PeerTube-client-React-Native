@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from "react-native";
-import { Colors } from "@/constants/Colors";
-import {useTheme} from "@react-navigation/core";
 import {useTextColor} from "@/hooks/useTextColor";
 
 

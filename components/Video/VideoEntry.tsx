@@ -1,11 +1,11 @@
 import {StyleSheet, View, Pressable, ImageBackground, Alert} from "react-native";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {Colors} from "@/constants/Colors";
-import {useTheme} from "@react-navigation/core";
 import formatDuration from "@/utils/formatDuration"
 import formatPublishedDate from "@/utils/formatPublishedDate";
 import shortenVideoTitle from "@/utils/shortenVideoTitle";
 import shortenChannelTitle from "@/utils/shortenChannelTitle";
+import {useTransparentBackgroundColor} from "@/hooks/useTransparentBackgroundColor";
 
 
 export const VideoEntry = (
@@ -21,10 +21,7 @@ export const VideoEntry = (
         onPress?: () => void,
     }
 ) => {
-
-    const theme = useTheme();
-
-    const backgroundColor = theme.dark ? Colors.darkTransparent.backgroundColor : Colors.lightTransparent.backgroundColor;
+    const backgroundColor = useTransparentBackgroundColor();
 
     return (
         <Pressable

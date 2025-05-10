@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {useKeepAwake} from "expo-keep-awake";
 import formatPublishedDate from "@/utils/formatPublishedDate";
-import {useTheme} from "@react-navigation/core";
 import {Colors} from "@/constants/Colors";
 import {FontAwesome6} from "@expo/vector-icons";
 import shortenVideoTitle from "@/utils/shortenVideoTitle";
@@ -15,6 +14,8 @@ import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 import {useQuery} from "@tanstack/react-query";
 import {getVideo} from "@/api/videos";
 import {ErrorView} from "@/components/Global/ErrorView";
+import {ThemedView} from "@/components/Global/ThemedView";
+import {useTextColor} from "@/hooks/useTextColor";
 
 export const VideoPlayer = (
     props: {
@@ -22,15 +23,12 @@ export const VideoPlayer = (
     }
 ) => {
     useKeepAwake();
-    const theme = useTheme();
+    const color = useTextColor();
 
     const [videoSource, setVideoSource] = useState<string>("");
     const [minimized, setMinimized] = useState(false);
     const dispatch = useDispatch();
     const preferredPlayer = useSelector((state: RootState) => state.userPreferences.preferredPlayer);
-
-    const backgroundColor = theme.dark ?  Colors.dark.backgroundColor : Colors.light.backgroundColor;
-    const textColor = theme.dark ?  Colors.dark.color : Colors.light.color;
 
     const {data, isLoading, isError, error, refetch} = useQuery({
         queryKey: ["video", props.videoUrl],
@@ -66,8 +64,8 @@ export const VideoPlayer = (
     });
 
     return (
-        <View
-            style={[!minimized ? styles.videoPlayerContainer : styles.videoPlayerContainerMinimized, { backgroundColor: backgroundColor }]}
+        <ThemedView
+            style={[!minimized ? styles.videoPlayerContainer : styles.videoPlayerContainerMinimized]}
         >
             {!minimized &&
                 <View style={styles.buttonsContainer}>
@@ -90,7 +88,7 @@ export const VideoPlayer = (
             {isLoading &&
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator color={Colors.emphasised.backgroundColor} style={{margin: 'auto'}} size={"large"}/>
-                    {minimized && <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />}
+                    {minimized && <FontAwesome6 name={"xmark"} size={35} color={color} onPress={closeVideo} />}
                 </View>
             }
             {data && !isError &&
@@ -132,12 +130,12 @@ export const VideoPlayer = (
                             <View style={styles.minimizedVideoTitleContainer} >
                                 <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(data.name)}</ThemedText>
                             </View>
-                            <FontAwesome6 name={"xmark"} size={35} color={textColor} onPress={closeVideo} />
+                            <FontAwesome6 name={"xmark"} size={35} color={color} onPress={closeVideo} />
                         </Pressable>
                     }
                 </View>
             }
-        </View>
+        </ThemedView>
     );
 };
 

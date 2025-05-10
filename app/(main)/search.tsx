@@ -17,14 +17,14 @@ import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 import {useInfiniteQuery} from "@tanstack/react-query";
 import {queryClient} from "@/api/queryClient";
 import {fetchSepiaVideos} from "@/api/sepiaSearch";
-import {useThemedColors} from "@/hooks/useThemedColors";
+import { useBackgroundColor } from "@/hooks/useBackgroundColor";
 
 const SepiaSearch = () => {
     const [search, setSearch] = useState<string>("");
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
 
-    const {backgroundColor} = useThemedColors();
+    const backgroundColor = useBackgroundColor();
 
     const queryKey = useMemo(() =>
             ['sepiaVideos', selectedCategory, search],
