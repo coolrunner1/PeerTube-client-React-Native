@@ -1,5 +1,15 @@
 import WebView from "react-native-webview";
-import {ActivityIndicator, Dimensions, Platform, Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {
+    ActivityIndicator,
+    Dimensions,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    View,
+    Text,
+    useWindowDimensions
+} from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
 import React, {useEffect, useState} from "react";
@@ -24,6 +34,8 @@ export const VideoPlayer = (
 ) => {
     useKeepAwake();
     const color = useTextColor();
+    const {height, width} = useWindowDimensions();
+    const isLandscape = width > height;
 
     const [videoSource, setVideoSource] = useState<string>("");
     const [minimized, setMinimized] = useState(false);
@@ -92,7 +104,10 @@ export const VideoPlayer = (
                 </View>
             }
             {data && !isError &&
-                <View style={minimized && {flexDirection: "row"}}>
+                <View style={minimized || isLandscape
+                        ? {flexDirection: "row"}
+                        : {flexDirection: "column"}
+                }>
                     {preferredPlayer === "Web" ?
                         <View style={!minimized ? styles.video : [styles.videoMinimized, styles.videoWebMinimized]}>
                             <WebView
@@ -104,15 +119,16 @@ export const VideoPlayer = (
                         </View>
                         :
                         <VideoView
-                            style={!minimized ? styles.video : styles.videoMinimized}
+                            style={minimized ? styles.videoMinimized
+                                : isLandscape ? styles.videoLandscape : styles.video}
                             player={player}
                             allowsFullscreen
                             allowsPictureInPicture
                             startsPictureInPictureAutomatically
                         />
                     }
-                    {!minimized && data &&
-                        <ScrollView>
+                    {!minimized &&
+                        <ScrollView style={isLandscape ? {height: "80%"} : null}>
                             <ThemedText>Work in progress</ThemedText>
                             <ThemedText>Published at: {formatPublishedDate(data.publishedAt)}</ThemedText>
                             <ThemedText>Title: {data.name}</ThemedText>
@@ -125,7 +141,7 @@ export const VideoPlayer = (
                             {data.language.label !== "Unknown" && <ThemedText>Language: {data.language.label}</ThemedText>}
                         </ScrollView>
                     }
-                    {minimized && data &&
+                    {minimized &&
                         <Pressable style={styles.minimizedDetailsContainer} onPress={() => setMinimized(false)}>
                             <View style={styles.minimizedVideoTitleContainer} >
                                 <ThemedText style={styles.minimizedVideoTitle}>{shortenVideoTitle(data.name)}</ThemedText>
@@ -156,6 +172,10 @@ const styles = StyleSheet.create({
         width: 140,
         height: 70,
         backgroundColor: "black"
+    },
+    videoLandscape: {
+        width: "55%",
+        height: "70%",
     },
     videoWebMinimized: {
         maxWidth: 140,
