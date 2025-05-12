@@ -1,11 +1,11 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {Colors} from "@/constants/Colors";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useBackgroundColor} from "@/hooks/useBackgroundColor";
+import {ThemedView} from "@/components/Global/ThemedView";
 
 const Registration = ({navigation}: {navigation: any}) => {
     const [username, setUsername] = useState<string>("");
@@ -21,8 +21,6 @@ const Registration = ({navigation}: {navigation: any}) => {
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
     };
-
-    const backgroundColor = useBackgroundColor();
 
     const validateRegistration = () => {
         if (!username || !validateEmail(email) || !password || password !== confirmPassword) {
@@ -43,9 +41,7 @@ const Registration = ({navigation}: {navigation: any}) => {
     };
 
     return (
-        <View style={
-            [styles.registrationFormContainer, {backgroundColor}]
-        }>
+        <ThemedView style={styles.registrationFormContainer}>
             <ThemedText style={{fontSize: 30, fontWeight: "bold"}}>Create an account</ThemedText>
             <ThemedText
                 style={{fontSize: 15, fontWeight: "bold", marginBottom: 10}}
@@ -85,7 +81,7 @@ const Registration = ({navigation}: {navigation: any}) => {
                 style={{backgroundColor: Colors.emphasised.backgroundColor, marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
-        </View>
+        </ThemedView>
     );
 };
 

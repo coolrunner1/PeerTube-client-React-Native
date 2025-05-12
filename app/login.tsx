@@ -1,19 +1,17 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {Colors} from "@/constants/Colors";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useBackgroundColor } from "@/hooks/useBackgroundColor";
+import {ThemedView} from "@/components/Global/ThemedView";
 
 const Login = ({navigation}: {navigation: any}) => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loginInfo, setLoginInfo] = useState<string>("");
     const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false);
-
-    const backgroundColor = useBackgroundColor();
 
     const signIn = () => {
         if (loginInfo) {
@@ -33,9 +31,7 @@ const Login = ({navigation}: {navigation: any}) => {
     }, [])
 
     return (
-        <View style={
-            [styles.loginFormContainer, {backgroundColor}]
-        }>
+        <ThemedView style={styles.loginFormContainer}>
             <ThemedText style={{fontSize: 30, fontWeight: "bold"}}>Login to your account</ThemedText>
             <ThemedText
                 style={{fontSize: 15, fontWeight: "bold", marginBottom: 10}}
@@ -63,7 +59,7 @@ const Login = ({navigation}: {navigation: any}) => {
                 style={{backgroundColor: Colors.emphasised.backgroundColor, marginTop: 40}}
             />
             <ThemedButton title={"Back"} onPress={() => navigation.navigate("index")} />
-        </View>
+        </ThemedView>
     );
 };
 

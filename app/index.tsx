@@ -4,11 +4,9 @@ import {ThemedText} from "@/components/Global/ThemedText";
 import {ThemedButton} from "@/components/Global/ThemedButton";
 import {useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useBackgroundColor} from "@/hooks/useBackgroundColor";
+import {ThemedView} from "@/components/Global/ThemedView";
 
 export default function Index({navigation}: {navigation: any}) {
-    const backgroundColor = useBackgroundColor();
-
     useEffect(() => {
         AsyncStorage.getItem("login")
             .then((data) => data && JSON.parse(data).loggedIn && navigation.navigate("(main)"))
@@ -22,9 +20,7 @@ export default function Index({navigation}: {navigation: any}) {
                 flex: 1,
             }}
         >
-            <View style={
-                [styles.mainContainer, {backgroundColor}]
-            }>
+            <ThemedView style={styles.mainContainer}>
                 <ThemedText style={{fontSize: 40, fontWeight: "bold"}}>Welcome back!</ThemedText>
                 <View style={{flex: 1, gap: 10, alignItems: "center", justifyContent: "center"}}>
                     <ThemedButton
@@ -37,7 +33,7 @@ export default function Index({navigation}: {navigation: any}) {
                         onPress={() => navigation.navigate('registration', {})}
                     />
                 </View>
-            </View>
+            </ThemedView>
 
         </ImageBackground>
     );

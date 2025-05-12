@@ -1,7 +1,6 @@
 import {
     StyleSheet,
     ActivityIndicator,
-    View,
     Alert
 } from "react-native";
 import React, {useEffect, useMemo, useState} from "react";
@@ -17,14 +16,12 @@ import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 import {useInfiniteQuery} from "@tanstack/react-query";
 import {queryClient} from "@/api/queryClient";
 import {fetchSepiaVideos} from "@/api/sepiaSearch";
-import { useBackgroundColor } from "@/hooks/useBackgroundColor";
+import {ThemedView} from "@/components/Global/ThemedView";
 
 const SepiaSearch = () => {
     const [search, setSearch] = useState<string>("");
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state: RootState) => state.filters.selectedSepiaCategory);
-
-    const backgroundColor = useBackgroundColor();
 
     const queryKey = useMemo(() =>
             ['sepiaVideos', selectedCategory, search],
@@ -86,7 +83,7 @@ const SepiaSearch = () => {
                         onFiltersMenuButtonPress={() => {}}
                         sepiaSearch={true}
                     />
-                    <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+                    <ThemedView style={styles.container}>
                         {isLoading &&
                             <ActivityIndicator color={Colors.emphasised.backgroundColor} size={"large"}/>
                         }
@@ -104,7 +101,7 @@ const SepiaSearch = () => {
                                 }}
                             />
                         }
-                    </View>
+                    </ThemedView>
                 </>
             }
         </>

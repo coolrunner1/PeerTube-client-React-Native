@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         maxHeight: 20
     },
     durationText: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: "bold",
         margin: "auto"
     },
