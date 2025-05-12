@@ -39,10 +39,10 @@ export const VideoEntry = (
             >
                 {props.isLive ?
                     <View style={[styles.videoDuration, styles.live]}>
-                        <ThemedText style={{fontWeight: "bold"}}>Live</ThemedText>
+                        <ThemedText style={styles.durationText}>Live</ThemedText>
                     </View> :
-                    <View style={[styles.videoDuration, {backgroundColor: backgroundColor}]}>
-                        <ThemedText style={{fontWeight: "bold"}}>{(formatDuration(props.duration))}</ThemedText>
+                    <View style={[styles.videoDuration, {backgroundColor}]}>
+                        <ThemedText style={styles.durationText}>{(formatDuration(props.duration))}</ThemedText>
                     </View>
                 }
             </ImageBackground>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     videoDuration: {
         flex: 1,
         alignItems: "center",
-        borderRadius: 10,
+        borderRadius: 8,
         paddingHorizontal: 5,
         marginLeft: "auto",
         marginTop: "auto",
@@ -82,8 +82,13 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         maxHeight: 20
     },
+    durationText: {
+        fontSize: 12,
+        fontWeight: "bold",
+        margin: "auto"
+    },
     live: {
         backgroundColor: Colors.emphasised.backgroundColor,
-        maxWidth: 40,
+        minWidth: 35,
     }
 })

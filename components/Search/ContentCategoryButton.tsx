@@ -57,7 +57,7 @@ export const ContentCategoryButton = (
 const styles = StyleSheet.create({
     button: {
         borderRadius: 10,
-        padding: 10,
+        paddingHorizontal: 10,
         marginHorizontal: 5,
         minWidth: 70,
         width: "auto",
@@ -66,5 +66,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 15,
         textAlign: "center",
+        margin: 'auto'
     },
 })
