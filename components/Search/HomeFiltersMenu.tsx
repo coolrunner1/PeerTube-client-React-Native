@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {ThemedView} from "@/components/Global/ThemedView";
 
 export const HomeFiltersMenu = (
     props: {
@@ -17,16 +17,16 @@ export const HomeFiltersMenu = (
                 flex: 1,
                 backgroundColor: "#000000af",
             }}>
-                <View style={styles.modalView}>
+                <ThemedView style={styles.modalView}>
                     <Text>Is live</Text>
                     <Text>Allow nsfw</Text>
                     <Text>Sort</Text>
                     <Text>Hello World!</Text>
                     <Pressable
                         onPress={props.onCloseButtonPress}>
-                        <Text>Hide Modal</Text>
+                        <Text style={{color: 'red', fontSize: 20}}>Hide Modal</Text>
                     </Pressable>
-                </View>
+                </ThemedView>
             </View>
         </Modal>
     );
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     modalView: {
         height: "100%",
         width: "70%",
-        backgroundColor: 'white',
         borderBottomRightRadius: 20,
         borderTopRightRadius: 20,
         padding: 35,

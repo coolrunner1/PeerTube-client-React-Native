@@ -12,7 +12,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setPreferredPlayer} from "@/slices/userPreferencesSlice";
 import {VideoPlayer} from "@/components/Video/VideoPlayer";
 import { RootState } from "@/state/store";
-import {setCurrentVideo} from "@/slices/videoPlayerSlice";
 
 
 export default function HomeLayout() {

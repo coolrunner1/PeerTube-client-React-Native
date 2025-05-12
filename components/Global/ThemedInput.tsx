@@ -1,9 +1,7 @@
 import {
-    NativeSyntheticEvent,
     StyleProp,
     StyleSheet,
     TextInput,
-    TextInputKeyPressEventData,
     TextStyle,
     useColorScheme
 } from "react-native";

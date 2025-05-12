@@ -8,7 +8,6 @@ import {
     StyleSheet,
     View,
     Text,
-    useWindowDimensions
 } from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
@@ -52,7 +51,7 @@ export const VideoPlayer = (
     };
 
     useEffect(() => {
-        console.log(data);
+        //console.log(data);
         if (!data) {
             return;
         }
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
         minHeight: 70
     },
     minimizedVideoTitleContainer: {
-        maxWidth: Dimensions.get("window").width - 200,
+        maxWidth: '78%',
         marginLeft: 8,
     },
     minimizedVideoTitle: {
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     topVideoTitleContainer: {
-        maxWidth: Dimensions.get("window").width - 100,
+        maxWidth: '78%',
         margin: "auto",
         paddingHorizontal: 10,
     },

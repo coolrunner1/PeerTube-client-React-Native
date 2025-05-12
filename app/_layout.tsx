@@ -1,13 +1,11 @@
-import {DarkTheme, DefaultTheme, NavigationContainer, ThemeProvider} from "@react-navigation/native";
+import {DarkTheme, DefaultTheme, ThemeProvider} from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import Index from "@/app/index";
 import Login from "@/app/login";
 import Registration from "@/app/registration";
-import HomeScreen from "@/app/(main)/home";
 import HomeLayout from "@/app/(main)/_layout";
-import {useState} from "react";
 import {store} from "@/state/store";
 import {Provider} from "react-redux";
 import {QueryClientProvider} from "@tanstack/react-query";
