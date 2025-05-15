@@ -10,14 +10,13 @@ export const ThemedText = (
         onPress?: () => void;
     }
 ) => {
+    const color = useTextColor({invert: props.inverseColor});
 
     return (
         <Text
             onPress={props.onPress}
             style={[
-                {
-                    color: useTextColor({invert: props.inverseColor})
-                },
+                {color},
                 props.style,
             ]}
         >

@@ -10,6 +10,7 @@ export const ThemedView = (
     }
 ) => {
     const backgroundColor = useBackgroundColor({invert: props.invert});
+
     return (
         <View style={[{backgroundColor}, props.style]}>
             {props.children}
