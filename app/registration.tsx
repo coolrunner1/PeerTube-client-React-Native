@@ -36,7 +36,11 @@ const Registration = ({navigation}: {navigation: any}) => {
             setInvalidForm(false);
             AsyncStorage.setItem("login",
                 JSON.stringify({username: username, email: email, password: password, loggedIn: true}))
-                    .then(() => navigation.navigate("(main)"));
+                    .then(() => navigation.reset({
+                            index: 0,
+                            routes: [{name: "(main)"}],
+                        })
+                    );
         }
     };
 
@@ -45,10 +49,15 @@ const Registration = ({navigation}: {navigation: any}) => {
             <ThemedText style={{fontSize: 30, fontWeight: "bold"}}>Create an account</ThemedText>
             <ThemedText
                 style={{fontSize: 15, fontWeight: "bold", marginBottom: 10}}
-            >Already have an account? <ThemedText
-                style={{textDecorationLine: 'underline'}}
-                onPress={() => navigation.navigate("login")}
-            >Sign In now</ThemedText></ThemedText>
+            >
+                Already have an account?&nbsp;
+                <ThemedText
+                    style={{textDecorationLine: 'underline'}}
+                    onPress={() => navigation.navigate("login")}
+                >
+                    Sign In now
+                </ThemedText>
+            </ThemedText>
             <ThemedInput
                 placeholder={invalidForm && !username ? "Username is empty!" : "Username"}
                 placeholderTextColor={Colors.emphasised.backgroundColor}

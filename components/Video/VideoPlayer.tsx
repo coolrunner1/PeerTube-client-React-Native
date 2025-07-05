@@ -8,6 +8,7 @@ import {
     StyleSheet,
     View,
     Text,
+    BackHandler,
 } from 'react-native';
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useVideoPlayer, VideoView} from "expo-video";
@@ -49,6 +50,23 @@ export const VideoPlayer = (
     const closeVideo = () => {
         dispatch(setCurrentVideo(""));
     };
+
+    useEffect(() => {
+        const backAction = () => {
+            if (!minimized) {
+                setMinimized(true);
+                return true;
+            }
+            return false;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+    }, []);
 
     useEffect(() => {
         //console.log(data);
@@ -128,18 +146,20 @@ export const VideoPlayer = (
                         />
                     }
                     {!minimized &&
-                        <ScrollView style={isLandscape ? {height: "80%"} : null}>
-                            <ThemedText>Work in progress</ThemedText>
-                            <ThemedText>Published at: {formatPublishedDate(data.publishedAt)}</ThemedText>
-                            <ThemedText>Title: {data.name}</ThemedText>
-                            <ThemedText>Description: {data.truncatedDescription}</ThemedText>
-                            <ThemedText>Views: {data.views}</ThemedText>
-                            <ThemedText>Likes: {data.likes}</ThemedText>
-                            <ThemedText>Dislikes: {data.dislikes}</ThemedText>
-                            <ThemedText>Tags:</ThemedText>
-                            {data.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
-                            {data.language.label !== "Unknown" && <ThemedText>Language: {data.language.label}</ThemedText>}
-                        </ScrollView>
+                        <View style={{height: "100%"}}>
+                            <ScrollView style={isLandscape ? {height: "80%"} : null}>
+                                <ThemedText>Work in progress</ThemedText>
+                                <ThemedText>Published at: {formatPublishedDate(data.publishedAt)}</ThemedText>
+                                <ThemedText>Title: {data.name}</ThemedText>
+                                <ThemedText>Description: {data.truncatedDescription}</ThemedText>
+                                <ThemedText>Views: {data.views}</ThemedText>
+                                <ThemedText>Likes: {data.likes}</ThemedText>
+                                <ThemedText>Dislikes: {data.dislikes}</ThemedText>
+                                <ThemedText>Tags:</ThemedText>
+                                {data.tags.map((tag: string, key) => <ThemedText key={key}>{tag}</ThemedText>)}
+                                {data.language.label !== "Unknown" && <ThemedText>Language: {data.language.label}</ThemedText>}
+                            </ScrollView>
+                        </View>
                     }
                     {minimized &&
                         <Pressable style={styles.minimizedDetailsContainer} onPress={() => setMinimized(false)}>
@@ -176,6 +196,7 @@ const styles = StyleSheet.create({
     videoLandscape: {
         width: "55%",
         height: "70%",
+        backgroundColor: "black"
     },
     videoWebMinimized: {
         maxWidth: 140,

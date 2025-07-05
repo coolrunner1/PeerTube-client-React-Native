@@ -19,7 +19,10 @@ const Login = ({navigation}: {navigation: any}) => {
             if ((loginJSON.username === username || loginJSON.email === username) && loginJSON.password === password) {
                 loginJSON.loggedIn = true;
                 AsyncStorage.setItem("login", JSON.stringify(loginJSON));
-                navigation.navigate("(main)");
+                navigation.reset({
+                    index: 0,
+                    routes: [{name: "(main)"}],
+                });
                 return;
             }
         }
@@ -35,10 +38,15 @@ const Login = ({navigation}: {navigation: any}) => {
             <ThemedText style={{fontSize: 30, fontWeight: "bold"}}>Login to your account</ThemedText>
             <ThemedText
                 style={{fontSize: 15, fontWeight: "bold", marginBottom: 10}}
-            >Don't have an account yet? <ThemedText
-                style={{textDecorationLine: 'underline'}}
-                onPress={() => navigation.navigate("registration")}
-            >Sign Up now</ThemedText></ThemedText>
+            >
+                Don't have an account yet?&nbsp;
+                <ThemedText
+                    style={{textDecorationLine: 'underline'}}
+                    onPress={() => navigation.navigate("registration")}
+                >
+                    Sign Up now
+                </ThemedText>
+            </ThemedText>
             <ThemedInput
                 placeholder={"Username/Email"}
                 placeholderTextColor={Colors.emphasised.backgroundColor}

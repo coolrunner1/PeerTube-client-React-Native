@@ -20,10 +20,11 @@ export default function RootLayout() {
             <Provider store={store}>
                 <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                     <Stack.Navigator>
-                        <Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
+                        {/*Commented out screens currently serve no practical purpose. They imitate auth.*/}
+                        {/*<Stack.Screen name="index" component={Index} options={{ headerShown: false }} />
                         <Stack.Screen name="login" component={Login} options={{ headerShown: false }} />
-                        <Stack.Screen name="registration" component={Registration} options={{ headerShown: false}} />
-                        <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false, orientation: "all" }} />
+                        <Stack.Screen name="registration" component={Registration} options={{ headerShown: false}} />*/}
+                        <Stack.Screen name="(main)" component={HomeLayout} options={{ headerShown: false, orientation: "default" }} />
                     </Stack.Navigator>
                     <StatusBar style="auto" />
                 </ThemeProvider>

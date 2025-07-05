@@ -24,6 +24,10 @@ const Options = ({navigation}: {navigation: any}) => {
     const playerOptions = ["Native", "Web"];
 
     const logOut = async () => {
+        Alert.alert('Not available', 'Will be featured in future updates.', [
+            {text: 'OK'},
+        ]);
+        /*
         const login = await AsyncStorage.getItem("login");
         if (login) {
             const loginJSON = JSON.parse(login);
@@ -31,6 +35,7 @@ const Options = ({navigation}: {navigation: any}) => {
             AsyncStorage.setItem("login", JSON.stringify(loginJSON))
                 .then(() => {navigation.navigate("index")});
         }
+        */
     }
 
     const setGlobalInstance = async() => {

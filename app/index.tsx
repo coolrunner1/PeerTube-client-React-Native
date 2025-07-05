@@ -9,7 +9,12 @@ import {ThemedView} from "@/components/Global/ThemedView";
 export default function Index({navigation}: {navigation: any}) {
     useEffect(() => {
         AsyncStorage.getItem("login")
-            .then((data) => data && JSON.parse(data).loggedIn && navigation.navigate("(main)"))
+            .then((data) => data && JSON.parse(data).loggedIn &&
+                    navigation.reset({
+                    index: 0,
+                    routes: [{name: "(main)"}],
+                })
+            );
     }, [])
 
     return (
