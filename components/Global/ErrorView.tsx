@@ -3,12 +3,12 @@ import {ThemedButton} from "@/components/Global/ThemedButton";
 import {StyleSheet} from "react-native";
 import {ThemedView} from "@/components/Global/ThemedView";
 
-export const ErrorView = (
-    props: {
-        error: string;
-        onReloadPress: () => void;
-    }
-) => {
+export type ErrorViewProps = {
+    error: string;
+    onReloadPress: () => void;
+}
+
+export const ErrorView = (props: ErrorViewProps) => {
 
     return (
         <ThemedView style={styles.container}>

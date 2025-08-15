@@ -11,12 +11,12 @@ import {useQuery} from "@tanstack/react-query";
 import {getCategories} from "@/api/categories";
 import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
-export const ContentCategories = (
-    props: {
-        onFiltersMenuButtonPress: () => void;
-        sepiaSearch?: boolean;
-    }
-) => {
+export type ContentCategoriesProps = {
+    onFiltersMenuButtonPress: () => void;
+    sepiaSearch?: boolean;
+};
+
+export const ContentCategories = (props: ContentCategoriesProps) => {
     const backgroundColor = useBackgroundColor();
     const [categories, setCategories] = useState<string[]>([]);
     const dispatch = useDispatch();

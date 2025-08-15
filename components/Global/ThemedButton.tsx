@@ -2,14 +2,14 @@ import {Pressable, StyleProp, StyleSheet, TextStyle, ViewStyle} from "react-nati
 import {ThemedText} from "@/components/Global/ThemedText";
 import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
-export const ThemedButton = (
-    props: {
-        title: string;
-        onPress: () => void;
-        style?: StyleProp<ViewStyle>;
-        textStyle?: StyleProp<TextStyle>;
-    }
-) => {
+export type ThemedButtonProps = {
+    title: string;
+    onPress: () => void;
+    style?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
+}
+
+export const ThemedButton = (props: ThemedButtonProps) => {
     const backgroundColor = useBackgroundColor({invert: true});
 
     return (

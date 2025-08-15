@@ -1,12 +1,12 @@
 import {Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import {ThemedView} from "@/components/Global/ThemedView";
 
-export const HomeFiltersMenu = (
-    props: {
-        showFilters: boolean;
-        onCloseButtonPress: () => void;
-    }
-) => {
+export type HomeFiltersMenuProps = {
+    showFilters: boolean;
+    onCloseButtonPress: () => void;
+};
+
+export const HomeFiltersMenu = (props: HomeFiltersMenuProps) => {
     return (
         <Modal
             animationType={"fade"}

@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from "react-native";
+import {StyleProp, Text, TextStyle} from "react-native";
 import {useTextColor} from "@/hooks/useTextColor";
 
-export const ThemedText = (
-    props: {
-        style?: StyleProp<TextStyle>;
-        children: React.ReactNode;
-        inverseColor?: boolean,
-        onPress?: () => void;
-    }
-) => {
+export type ThemedTextProps = {
+    style?: StyleProp<TextStyle>;
+    children: React.ReactNode;
+    inverseColor?: boolean,
+    onPress?: () => void;
+};
+
+export const ThemedText = (props: ThemedTextProps) => {
     const color = useTextColor({invert: props.inverseColor});
 
     return (

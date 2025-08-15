@@ -28,11 +28,11 @@ import {ThemedView} from "@/components/Global/ThemedView";
 import {useTextColor} from "@/hooks/useTextColor";
 import {useCheckLandscape} from "@/hooks/useCheckLandscape";
 
-export const VideoPlayer = (
-    props: {
-        videoUrl: string,
-    }
-) => {
+export type VideoPlayerProps = {
+    videoUrl: string,
+};
+
+export const VideoPlayer = (props: VideoPlayerProps) => {
     useKeepAwake();
     const color = useTextColor();
     const isLandscape = useCheckLandscape();

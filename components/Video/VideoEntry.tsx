@@ -7,20 +7,19 @@ import shortenVideoTitle from "@/utils/shortenVideoTitle";
 import shortenChannelTitle from "@/utils/shortenChannelTitle";
 import {useTransparentBackgroundColor} from "@/hooks/useTransparentBackgroundColor";
 
+export type VideoEntryProps = {
+    title: string,
+    thumbnail: string,
+    publishedAt: string,
+    views: number,
+    channelDisplayName: string,
+    duration: number,
+    isLive?: boolean,
+    nsfw?: boolean,
+    onPress?: () => void,
+};
 
-export const VideoEntry = (
-    props: {
-        title: string,
-        thumbnail: string,
-        publishedAt: string,
-        views: number,
-        channelDisplayName: string,
-        duration: number,
-        isLive?: boolean,
-        nsfw?: boolean,
-        onPress?: () => void,
-    }
-) => {
+export const VideoEntry = (props: VideoEntryProps) => {
     const backgroundColor = useTransparentBackgroundColor();
 
     return (

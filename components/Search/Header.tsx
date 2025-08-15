@@ -4,13 +4,13 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
 import {ThemedInput} from "@/components/Global/ThemedInput";
 
-export const Header = (
-    props: {
-        title: string;
-        search?: string;
-        setSearch: (value: string) => void;
-    }
-) => {
+export type HeaderProps = {
+    title: string;
+    search?: string;
+    setSearch: (value: string) => void;
+};
+
+export const Header = (props: HeaderProps) => {
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
 

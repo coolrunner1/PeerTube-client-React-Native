@@ -6,14 +6,14 @@ import {RootState} from "@/state/store";
 import {useEffect, useState} from "react";
 import {useBackgroundColor} from "@/hooks/useBackgroundColor";
 
-export const ContentCategoryButton = (
-    props: {
-        id: number;
-        title: string;
-        sepiaSearch?: boolean;
-        onPress: () => void;
-    }
-) => {
+export type ContentCategoryButtonProps = {
+    id: number;
+    title: string;
+    sepiaSearch?: boolean;
+    onPress: () => void;
+};
+
+export const ContentCategoryButton = (props: ContentCategoryButtonProps) => {
     const backgroundColor = useBackgroundColor({invert: true});
     const selectedCategory = useSelector((state: RootState)=> state.filters.selectedCategory);
     const selectedSepiaCategory = useSelector((state: RootState)=> state.filters.selectedSepiaCategory);

@@ -7,17 +7,17 @@ import {
 } from "react-native";
 import {Colors} from "@/constants/Colors";
 
-export const ThemedInput = (
-    props: {
-        placeholder: string;
-        onChangeText: (value: string) => void;
-        onSubmitEditing?: () => void;
-        placeholderTextColor?: string;
-        secureTextEntry?: boolean;
-        style?: StyleProp<TextStyle>;
-        value: string;
-    }
-) => {
+export type ThemedInputProps = {
+    placeholder: string;
+    onChangeText: (value: string) => void;
+    onSubmitEditing?: () => void;
+    placeholderTextColor?: string;
+    secureTextEntry?: boolean;
+    style?: StyleProp<TextStyle>;
+    value: string;
+};
+
+export const ThemedInput = (props: ThemedInputProps) => {
     const theme = useColorScheme();
 
     return (

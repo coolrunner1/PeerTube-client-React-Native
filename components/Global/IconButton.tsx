@@ -1,16 +1,16 @@
-import {Pressable, StyleProp, StyleSheet, ViewStyle} from "react-native";
+import {Pressable, StyleProp, StyleSheet, TouchableOpacityProps, ViewStyle} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useThemedColors} from "@/hooks/useThemedColors";
 
-export const IconButton = (
-    props: {
-        name: string;
-        onPress: () => void;
-        customIconColor?: string;
-        customIconSize?: number;
-        style?: StyleProp<ViewStyle>;
-    }
-) => {
+export type IconButtonProps = {
+    name: string;
+    onPress: () => void;
+    customIconColor?: string;
+    customIconSize?: number;
+    style?: StyleProp<ViewStyle>;
+}
+
+export const IconButton = (props: IconButtonProps) => {
     const {color, backgroundColor} = useThemedColors({invert: true});
 
     return (

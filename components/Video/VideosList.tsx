@@ -3,6 +3,16 @@ import {VideoEntry} from "@/components/Video/VideoEntry";
 import {Colors} from "@/constants/Colors";
 import {VideoListEntry} from "@/types/VideoListEntry";
 
+export type VideoListProps = {
+    videos: VideoListEntry[];
+    currentInstance?: string;
+    onRefresh: () => void;
+    setCurrentVideo: (video: string) => void;
+    loading: boolean;
+    isFetchingNextPage: boolean;
+    setEndOfScreen: () => void;
+};
+
 /**
  * Component with a list of videos
  * @param props.videos - An array of objects with type VideoListEntry
@@ -13,17 +23,7 @@ import {VideoListEntry} from "@/types/VideoListEntry";
  * @param props.endOfScreen
  * @param props.setEndOfScreen
  */
-export const VideosList = (
-    props: {
-        videos: VideoListEntry[];
-        currentInstance?: string;
-        onRefresh: () => void;
-        setCurrentVideo: (video: string) => void;
-        loading: boolean;
-        isFetchingNextPage: boolean;
-        setEndOfScreen: () => void;
-    }
-) => {
+export const VideosList = (props: VideoListProps) => {
 
     return (
         <View style={styles.flatListContainer}>
