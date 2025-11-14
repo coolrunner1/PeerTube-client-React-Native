@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "PTPlay",
+    "name": "MAX",
     "slug": "my-app",
     "version": "0.0.1a",
     "orientation": "portrait",
-    "icon": "./assets/images/peertube-temp-icon.png",
-    "scheme": "ptplay",
+    "icon": "./assets/images/icon.png",
+    "scheme": "max",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.coolrunner.ptplay",
+      "bundleIdentifier": "com.coolrunner.max",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.coolrunner.ptplay"
@@ -25,14 +25,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
